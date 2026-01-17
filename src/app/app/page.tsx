@@ -1,4 +1,8 @@
-export default function AppHome() {
+import { ensureUser } from "@/lib/auth/ensureUser";
+
+export default async function AppHome() {
+  await ensureUser();
+
   return (
     <main className="min-h-screen p-8 text-white">
       <h1 className="text-3xl font-bold">DION App</h1>
