@@ -44,6 +44,16 @@ NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/app
 
 Get your Clerk keys from [clerk.com](https://clerk.com).
 
+## OpenAI Setup (for Socratic Agent)
+
+Add this environment variable to your `.env.local` file and Vercel environment variables:
+
+```
+OPENAI_API_KEY=sk-...
+```
+
+Get your OpenAI API key from [platform.openai.com](https://platform.openai.com/api-keys). The Socratic Agent feature requires this key to generate questions about your scripts.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
