@@ -580,11 +580,12 @@ export function EditorClient({
               lineNumbers: "on",
               renderWhitespace: "none",
               tabSize: 2,
-              horizontalScrollbarSize: 10,
               scrollbar: {
                 vertical: "auto",
                 horizontal: "auto",
                 useShadows: false,
+                horizontalScrollbarSize: 10,
+                verticalScrollbarSize: 10,
               },
             }}
           />
