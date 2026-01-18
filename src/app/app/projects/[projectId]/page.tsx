@@ -77,7 +77,7 @@ export default async function ProjectPage({
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {scripts.map((script) => (
+            {scripts.map((script: Awaited<ReturnType<typeof prisma.script.findMany>>[number]) => (
               <Link
                 key={script.id}
                 href={`/app/projects/${projectId}/scripts/${script.id}/editor`}

@@ -29,7 +29,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       threadId: thread.id,
-      messages: messages.map((msg) => ({
+      messages: messages.map((msg: Awaited<ReturnType<typeof getRecentMessages>>[number]) => ({
         role: msg.role,
         content: msg.content,
         createdAt: msg.createdAt.toISOString(),

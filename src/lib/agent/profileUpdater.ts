@@ -1,9 +1,11 @@
-import type { WriterProfile } from "@prisma/client";
+import { prisma } from "@/lib/db/prisma";
+
+type WriterProfile = Awaited<ReturnType<typeof prisma.writerProfile.findUnique>>;
 
 export function updateProfileFromUserText(
-  profile: WriterProfile,
+  profile: NonNullable<WriterProfile>,
   userText: string,
-): Partial<WriterProfile> {
+): Partial<NonNullable<WriterProfile>> {
   const lowerText = userText.toLowerCase();
   const updates: Partial<WriterProfile> = {};
 

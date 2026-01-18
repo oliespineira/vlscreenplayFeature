@@ -58,7 +58,7 @@ export async function POST(request: Request) {
 
     // Get recent conversation history
     const recentMessages = await getRecentMessages(thread.id, 12);
-    const conversation = recentMessages.map((msg) => ({
+    const conversation = recentMessages.map((msg: Awaited<ReturnType<typeof getRecentMessages>>[number]) => ({
       role: msg.role as "user" | "assistant",
       content: msg.content,
     }));
@@ -80,7 +80,6 @@ export async function POST(request: Request) {
         notes: profile.notes,
       },
       conversation,
-      style: responseStyle,
     });
 
     // Call OpenAI
@@ -97,18 +96,6 @@ export async function POST(request: Request) {
     const maxAttempts = 2;
 
     while (attempts < maxAttempts) {
-      let retryMessage = "";
-      if (attempts === 1) {
-        if (responseStyle === "socratic") {
-          retryMessage =
-            "Rewrite your previous response into ONLY neutral questions. No advice. Every line must end with a '?'";
-        } else {
-          // director mode
-          retryMessage =
-            "Rewrite your response to be ONLY: (1) grounded observations, (2) tentative interpretations using might/could, (3) questions. Do NOT write screenplay lines, do NOT quote lines, do NOT give advice, do NOT instruct changes.";
-        }
-      }
-
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -127,7 +114,8 @@ export async function POST(request: Request) {
                 },
                 {
                   role: "user" as const,
-                  content: retryMessage,
+                  content:
+                    "Rewrite your previous response into ONLY neutral questions. No advice. Every line must end with a '?'",
                 },
               ]
             : messages,
@@ -145,20 +133,16 @@ export async function POST(request: Request) {
       const data = await response.json();
       assistantText = data.choices[0]?.message?.content || "";
 
-      // Validate based on style
+      // Validate
       try {
-        if (responseStyle === "socratic") {
-          assertQuestionsOnly(assistantText);
-        } else {
-          assertNonPrescriptiveNonGenerative(assistantText);
-        }
+        assertQuestionsOnly(assistantText);
         break; // Success
       } catch (validationError) {
         if (attempts === maxAttempts - 1) {
           // Last attempt failed
           return NextResponse.json(
             {
-              error: `Failed to generate valid ${responseStyle} response`,
+              error: "Failed to generate questions-only response",
               details: validationError instanceof Error ? validationError.message : String(validationError),
             },
             { status: 500 }

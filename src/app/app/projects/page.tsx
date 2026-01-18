@@ -51,7 +51,14 @@ export default async function ScriptsPage() {
       },
     },
     orderBy: { updatedAt: "desc" },
-  });
+  }) as Array<{
+    id: string;
+    title: string;
+    updatedAt: Date;
+    projectId: string;
+    fountain: string;
+    project: { title: string };
+  }>;
 
   return (
     <div className="min-h-screen">
