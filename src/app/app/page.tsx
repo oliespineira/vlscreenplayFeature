@@ -5,18 +5,22 @@ export default async function AppHome() {
   await ensureUser();
 
   return (
-    <main className="min-h-screen p-8 text-white">
-      <h1 className="text-3xl font-bold">DION App</h1>
-      <p className="mt-2 text-white/70">
-        This is the authenticated area. Next: Projects, Scripts, Editor.
-      </p>
-      <div className="mt-6">
-        <Link
-          href="/app/projects"
-          className="inline-block rounded bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
-        >
-          Go to Projects
-        </Link>
+    <main className="min-h-screen">
+      <div className="mx-auto max-w-4xl">
+        <h1 className="mb-4 text-4xl font-black uppercase tracking-widest text-yellow-500 sm:text-5xl">
+          Welcome Back
+        </h1>
+        <p className="mb-8 text-lg text-gray-400">
+          Continue writing your screenplays or start a new script.
+        </p>
+        <div className="flex flex-col gap-4 sm:flex-row">
+          <Link
+            href="/app/projects"
+            className="rounded bg-yellow-500 px-8 py-4 text-base font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
+          >
+            View Scripts
+          </Link>
+        </div>
       </div>
     </main>
   );

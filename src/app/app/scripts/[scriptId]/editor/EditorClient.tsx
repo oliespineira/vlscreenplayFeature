@@ -21,12 +21,14 @@ interface EditorClientProps {
   scriptId: string;
   initialTitle: string;
   initialFountain: string;
+  initialSceneLine?: number;
 }
 
 export function EditorClient({
   scriptId,
   initialTitle,
   initialFountain,
+  initialSceneLine,
 }: EditorClientProps) {
   const [title, setTitle] = useState(initialTitle);
   const [fountain, setFountain] = useState(initialFountain);
@@ -208,6 +210,15 @@ export function EditorClient({
       }
     };
   }, []);
+
+  // Jump to initial scene line if provided
+  useEffect(() => {
+    if (editorInstance && initialSceneLine) {
+      editorInstance.revealLineInCenter(initialSceneLine);
+      editorInstance.setPosition({ lineNumber: initialSceneLine, column: 1 });
+      editorInstance.focus();
+    }
+  }, [editorInstance, initialSceneLine]);
 
   const handleEditorMount = (editor: monaco.editor.IStandaloneCodeEditor) => {
     setEditorInstance(editor);
@@ -580,11 +591,12 @@ export function EditorClient({
               lineNumbers: "on",
               renderWhitespace: "none",
               tabSize: 2,
-              horizontalScrollbarSize: 10,
               scrollbar: {
                 vertical: "auto",
                 horizontal: "auto",
                 useShadows: false,
+                horizontalScrollbarSize: 10,
+                verticalScrollbarSize: 10,
               },
             }}
           />

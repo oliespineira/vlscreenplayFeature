@@ -12,13 +12,17 @@ export function SceneSidebar({
   onSelectScene,
 }: SceneSidebarProps) {
   return (
-    <div className="flex h-full w-[280px] flex-col border-r border-white/20 bg-black/50">
-      <div className="border-b border-white/10 p-4">
-        <h2 className="text-lg font-semibold text-white">Scenes</h2>
+    <div className="flex h-full w-[280px] flex-col border-r border-gray-800 bg-black/50 backdrop-blur-sm">
+      <div className="border-b border-gray-800 p-4">
+        <h2 className="text-lg font-black uppercase tracking-widest text-yellow-500">
+          Scenes
+        </h2>
       </div>
       <div className="flex-1 overflow-y-auto">
         {scenes.length === 0 ? (
-          <div className="p-4 text-sm text-white/60">No scenes found</div>
+          <div className="p-4 text-xs font-medium uppercase tracking-widest text-gray-500">
+            No scenes found
+          </div>
         ) : (
           <div className="p-2">
             {scenes.map((scene) => {
@@ -27,13 +31,13 @@ export function SceneSidebar({
                 <button
                   key={scene.index}
                   onClick={() => onSelectScene(scene)}
-                  className={`mb-1 w-full rounded px-3 py-2 text-left text-sm transition-colors ${
+                  className={`mb-1 w-full rounded border px-3 py-2 text-left text-sm transition-all ${
                     isActive
-                      ? "bg-blue-600/30 text-white"
-                      : "text-white/70 hover:bg-white/10 hover:text-white"
+                      ? "border-yellow-500 bg-yellow-500/20 text-yellow-500"
+                      : "border-gray-800 bg-black/50 text-gray-400 hover:border-yellow-500/50 hover:text-yellow-500"
                   }`}
                 >
-                  <div className="font-medium">
+                  <div className="font-bold uppercase tracking-wider">
                     {scene.index}. {scene.slugline}
                   </div>
                 </button>

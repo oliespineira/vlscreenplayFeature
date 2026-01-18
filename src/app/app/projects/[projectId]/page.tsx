@@ -35,24 +35,28 @@ export default async function ProjectPage({
   });
 
   return (
-    <div className="min-h-screen p-8 text-white">
-      <div className="mx-auto max-w-4xl">
+    <div className="min-h-screen">
+      <div className="mx-auto max-w-6xl">
         <div className="mb-8">
           <Link
             href="/app/projects"
-            className="mb-4 inline-block text-white/70 hover:text-white"
+            className="mb-4 inline-block text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-yellow-500"
           >
             ← Back to Projects
           </Link>
-          <h1 className="text-3xl font-bold">{project.title}</h1>
+          <h1 className="text-3xl font-black uppercase tracking-widest text-yellow-500 sm:text-4xl">
+            {project.title}
+          </h1>
         </div>
 
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-semibold">Scripts</h2>
+          <h2 className="text-2xl font-bold uppercase tracking-widest text-white">
+            Scripts
+          </h2>
           <form action={createScript.bind(null, projectId)}>
             <button
               type="submit"
-              className="rounded bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700"
+              className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
             >
               New Script
             </button>
@@ -60,17 +64,29 @@ export default async function ProjectPage({
         </div>
 
         {scripts.length === 0 ? (
-          <p className="text-white/70">No scripts yet. Create your first script!</p>
+          <div className="rounded-lg border border-gray-800 bg-black/50 p-12 text-center backdrop-blur-sm">
+            <p className="mb-4 text-lg text-gray-400">No scripts yet.</p>
+            <form action={createScript.bind(null, projectId)} className="inline-block">
+              <button
+                type="submit"
+                className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
+              >
+                Create Your First Script
+              </button>
+            </form>
+          </div>
         ) : (
-          <div className="space-y-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {scripts.map((script) => (
               <Link
                 key={script.id}
                 href={`/app/projects/${projectId}/scripts/${script.id}/editor`}
-                className="block rounded-lg border border-white/10 bg-white/5 p-4 transition-colors hover:bg-white/10"
+                className="group rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm transition-all hover:border-yellow-500 hover:bg-black/70"
               >
-                <h3 className="text-lg font-semibold">{script.title}</h3>
-                <p className="mt-1 text-sm text-white/60">
+                <h3 className="mb-2 text-xl font-bold uppercase tracking-widest text-white group-hover:text-yellow-500">
+                  {script.title}
+                </h3>
+                <p className="text-sm text-gray-500">
                   Updated {new Date(script.updatedAt).toLocaleDateString()}
                 </p>
               </Link>
