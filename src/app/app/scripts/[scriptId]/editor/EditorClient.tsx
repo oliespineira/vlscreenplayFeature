@@ -16,6 +16,12 @@ import {
 } from "@/lib/scripts/fountainSmart";
 import { computeCursorContext, type CursorContext } from "@/lib/scripts/editorContext";
 import { SceneSidebar } from "@/components/editor/SceneSidebar";
+import { 
+  computePageBreaks, 
+  getCurrentPage, 
+  getTotalPages,
+  type PageBreak 
+} from "@/lib/pagination/screenplayPagination";
 
 interface EditorClientProps {
   scriptId: string;
@@ -55,6 +61,106 @@ export function EditorClient({
   const completionProviderRef = useRef<monaco.IDisposable | null>(null);
   const enterKeyDisposableRef = useRef<monaco.IDisposable | null>(null);
   const router = useRouter();
+  
+  // Resizable editor width state
+  const [editorWidth, setEditorWidth] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("dion.editorWidth");
+      return saved ? parseInt(saved, 10) : 760;
+    }
+    return 760;
+  });
+  const [isResizing, setIsResizing] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const resizeRef = useRef<{ startX: number; startWidth: number } | null>(null);
+  
+  // Pagination state
+  const [pageBreaks, setPageBreaks] = useState<PageBreak[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const pageBreakDecorationsRef = useRef<string[]>([]);
+  const pageNumberWidgetsRef = useRef<monaco.editor.IContentWidget[]>([]);
+  const paginationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+  
+  // Clamp editor width based on window size
+  const LEFT_SIDEBAR_WIDTH = 280;
+  const RIGHT_PANEL_WIDTH = 380;
+  const MIN_EDITOR_WIDTH = 520;
+  const PADDING = 32; // Total horizontal padding
+  
+  const getMaxEditorWidth = () => {
+    if (typeof window === "undefined") return 1200;
+    return window.innerWidth - LEFT_SIDEBAR_WIDTH - RIGHT_PANEL_WIDTH - PADDING;
+  };
+  
+  const clampEditorWidth = (width: number) => {
+    const maxWidth = getMaxEditorWidth();
+    return Math.max(MIN_EDITOR_WIDTH, Math.min(width, maxWidth));
+  };
+  
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setEditorWidth((prev) => {
+        const maxWidth = getMaxEditorWidth();
+        return Math.max(MIN_EDITOR_WIDTH, Math.min(prev, maxWidth));
+      });
+    };
+    
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  
+  // Save editor width to localStorage
+  useEffect(() => {
+    localStorage.setItem("dion.editorWidth", editorWidth.toString());
+  }, [editorWidth]);
+  
+  // Handle resize drag
+  const handleResizeStart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+    resizeRef.current = {
+      startX: e.clientX,
+      startWidth: editorWidth,
+    };
+  };
+  
+  useEffect(() => {
+    if (!isResizing) return;
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!resizeRef.current) return;
+      
+      const deltaX = resizeRef.current.startX - e.clientX; // Inverted: drag left increases width
+      const newWidth = clampEditorWidth(resizeRef.current.startWidth + deltaX);
+      setEditorWidth(newWidth);
+    };
+    
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      resizeRef.current = null;
+    };
+    
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isResizing]);
 
   useEffect(() => {
     const parsedScenes = parseScenesFromFountain(fountain);
@@ -219,6 +325,198 @@ export function EditorClient({
       editorInstance.focus();
     }
   }, [editorInstance, initialSceneLine]);
+
+  // Compute page breaks when content changes (debounced)
+  useEffect(() => {
+    if (!editorInstance) return;
+
+    const model = editorInstance.getModel();
+    if (!model) return;
+
+    const updatePageBreaks = () => {
+      const content = model.getValue();
+      const breaks = computePageBreaks(content, 55);
+      setPageBreaks(breaks);
+      const total = getTotalPages(content, breaks, 55);
+      setTotalPages(total);
+    };
+
+    // Initial computation
+    updatePageBreaks();
+
+    // Debounced update on content change
+    const contentChangeDisposable = model.onDidChangeContent(() => {
+      if (paginationTimeoutRef.current) {
+        clearTimeout(paginationTimeoutRef.current);
+      }
+      paginationTimeoutRef.current = setTimeout(() => {
+        updatePageBreaks();
+      }, 150);
+    });
+
+    return () => {
+      contentChangeDisposable.dispose();
+      if (paginationTimeoutRef.current) {
+        clearTimeout(paginationTimeoutRef.current);
+      }
+    };
+  }, [editorInstance]);
+
+  // Apply page break decorations and content widgets
+  useEffect(() => {
+    if (!editorInstance) {
+      return;
+    }
+
+    const model = editorInstance.getModel();
+    if (!model) return;
+
+    // Clear existing decorations
+    if (pageBreakDecorationsRef.current.length > 0) {
+      model.deltaDecorations(pageBreakDecorationsRef.current, []);
+      pageBreakDecorationsRef.current = [];
+    }
+
+    // Remove existing content widgets
+    pageNumberWidgetsRef.current.forEach((widget) => {
+      editorInstance.removeContentWidget(widget);
+    });
+    pageNumberWidgetsRef.current = [];
+
+    if (pageBreaks.length === 0) {
+      // Still add page 1 widget even if no breaks
+      class PageNumberWidget implements monaco.editor.IContentWidget {
+        private readonly domNode: HTMLElement;
+        private readonly id: string;
+        private readonly lineNumber: number;
+        private readonly pageNumber: number;
+
+        constructor(pageNumber: number, lineNumber: number) {
+          this.pageNumber = pageNumber;
+          this.lineNumber = lineNumber;
+          this.id = `page-number-${pageNumber}-${lineNumber}`;
+          this.domNode = document.createElement("div");
+          this.domNode.className = "dion-page-number-widget";
+          this.domNode.innerHTML = `
+            <div class="dion-page-number-content">
+              <div class="dion-page-number-line"></div>
+              <div class="dion-page-number-text">PAGE ${pageNumber}</div>
+            </div>
+          `;
+        }
+
+        getId(): string {
+          return this.id;
+        }
+
+        getDomNode(): HTMLElement {
+          return this.domNode;
+        }
+
+        getPosition(): monaco.editor.IContentWidgetPosition | null {
+          return {
+            position: { lineNumber: this.lineNumber, column: 1 },
+            preference: [monaco.editor.ContentWidgetPositionPreference.ABOVE],
+          };
+        }
+      }
+
+      const page1Widget = new PageNumberWidget(1, 1);
+      editorInstance.addContentWidget(page1Widget);
+      pageNumberWidgetsRef.current.push(page1Widget);
+      return;
+    }
+
+    // Create decorations for page break lines (minimal, just for spacing)
+    const decorations = pageBreaks.map((break_) => ({
+      range: new monaco.Range(break_.atModelLine, 1, break_.atModelLine, 1),
+      options: {
+        isWholeLine: false,
+        marginClassName: "dionPageBreakMargin",
+      },
+    }));
+
+    // Apply decorations
+    const decorationIds = model.deltaDecorations(pageBreakDecorationsRef.current, decorations);
+    pageBreakDecorationsRef.current = decorationIds;
+
+    // Create content widgets for page numbers
+    // Add page 1 at the start
+    class PageNumberWidget implements monaco.editor.IContentWidget {
+      private readonly domNode: HTMLElement;
+      private readonly id: string;
+      private readonly lineNumber: number;
+      private readonly pageNumber: number;
+
+      constructor(pageNumber: number, lineNumber: number) {
+        this.pageNumber = pageNumber;
+        this.lineNumber = lineNumber;
+        this.id = `page-number-${pageNumber}-${lineNumber}`;
+        this.domNode = document.createElement("div");
+        this.domNode.className = "dion-page-number-widget";
+        this.domNode.innerHTML = `
+          <div class="dion-page-number-content">
+            <div class="dion-page-number-line"></div>
+            <div class="dion-page-number-text">PAGE ${pageNumber}</div>
+          </div>
+        `;
+      }
+
+      getId(): string {
+        return this.id;
+      }
+
+      getDomNode(): HTMLElement {
+        return this.domNode;
+      }
+
+      getPosition(): monaco.editor.IContentWidgetPosition | null {
+        return {
+          position: { lineNumber: this.lineNumber, column: 1 },
+          preference: [monaco.editor.ContentWidgetPositionPreference.ABOVE],
+        };
+      }
+    }
+
+    // Add page 1 widget at line 1
+    const page1Widget = new PageNumberWidget(1, 1);
+    editorInstance.addContentWidget(page1Widget);
+    pageNumberWidgetsRef.current.push(page1Widget);
+
+    // Add widgets for each page break
+    pageBreaks.forEach((break_) => {
+      const widget = new PageNumberWidget(break_.pageNumber, break_.atModelLine);
+      editorInstance.addContentWidget(widget);
+      pageNumberWidgetsRef.current.push(widget);
+    });
+  }, [editorInstance, pageBreaks]);
+
+  // Update current page when cursor moves
+  useEffect(() => {
+    if (!editorInstance || pageBreaks.length === 0) {
+      setCurrentPage(1);
+      return;
+    }
+
+    const page = getCurrentPage(cursorLine, pageBreaks);
+    setCurrentPage(page);
+  }, [editorInstance, cursorLine, pageBreaks]);
+
+  // Cleanup pagination timeout and widgets on unmount
+  useEffect(() => {
+    return () => {
+      if (paginationTimeoutRef.current) {
+        clearTimeout(paginationTimeoutRef.current);
+      }
+      // Cleanup content widgets
+      if (editorInstance && pageNumberWidgetsRef.current.length > 0) {
+        pageNumberWidgetsRef.current.forEach((widget) => {
+          editorInstance.removeContentWidget(widget);
+        });
+        pageNumberWidgetsRef.current = [];
+      }
+    };
+  }, [editorInstance]);
 
   const handleEditorMount = (editor: monaco.editor.IStandaloneCodeEditor) => {
     setEditorInstance(editor);
@@ -417,6 +715,9 @@ export function EditorClient({
     }
 
     const messageToSend = customUserMessage || userMessage.trim() || undefined;
+    
+    // Determine intent based on mode
+    const intent = mode === "selection" ? "discuss_selection" : mode === "scene" ? "discuss_scene" : undefined;
 
     try {
       const response = await fetch("/api/agent/ask", {
@@ -425,6 +726,7 @@ export function EditorClient({
         body: JSON.stringify({
           scriptId,
           mode,
+          intent,
           selectionText: mode === "selection" ? selectedText : undefined,
           sceneText: sceneData.text,
           sceneSlugline: sceneData.slugline,
@@ -436,8 +738,16 @@ export function EditorClient({
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Failed to get questions");
+        // Check if response is JSON
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const error = await response.json();
+          throw new Error(error.error || "Failed to get questions");
+        } else {
+          // Handle HTML error pages
+          const text = await response.text();
+          throw new Error(`Server error (${response.status}): ${text.substring(0, 100)}`);
+        }
       }
 
       const data = await response.json();
@@ -549,6 +859,55 @@ export function EditorClient({
           placeholder="SCRIPT TITLE"
         />
         <div className="flex items-center gap-4">
+          {/* Page Indicator */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium uppercase tracking-widest text-gray-400">
+              Page {currentPage} / {totalPages}
+            </span>
+            {totalPages > 1 && (
+              <select
+                value={currentPage}
+                onChange={(e) => {
+                  const targetPage = parseInt(e.target.value, 10);
+                  if (!editorInstance) return;
+                  
+                  let targetLine = 1;
+                  if (targetPage === 1) {
+                    targetLine = 1;
+                  } else {
+                    const breakIndex = targetPage - 2;
+                    if (breakIndex >= 0 && breakIndex < pageBreaks.length) {
+                      targetLine = pageBreaks[breakIndex].atModelLine;
+                    } else {
+                      // Last page - go to end
+                      const model = editorInstance.getModel();
+                      if (model) {
+                        targetLine = model.getLineCount();
+                      }
+                    }
+                  }
+                  
+                  editorInstance.revealLineInCenter(targetLine);
+                  editorInstance.setPosition({ lineNumber: targetLine, column: 1 });
+                  editorInstance.focus();
+                }}
+                className="rounded border border-gray-800 bg-black/50 px-2 py-1 text-xs font-medium uppercase tracking-widest text-gray-400 outline-none focus:border-yellow-500 focus:text-yellow-500"
+              >
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <option key={page} value={page}>
+                    {page}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="rounded border border-yellow-500 px-3 py-1 text-xs font-bold uppercase tracking-widest text-yellow-500 transition-all hover:bg-yellow-500 hover:text-black"
+            title={isExpanded ? "Show sidebars" : "Expand editor"}
+          >
+            {isExpanded ? "←" : "→"}
+          </button>
           <label className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-gray-400">
             <input
               type="checkbox"
@@ -567,41 +926,69 @@ export function EditorClient({
       </div>
 
       <div className="flex flex-1 overflow-hidden">
-        <SceneSidebar
-          scenes={scenes}
-          activeSceneIndex={activeSceneIndex}
-          onSelectScene={handleSelectScene}
-        />
-        <div className="flex-1 overflow-hidden rounded border border-gray-800">
-          <Editor
-            height="calc(100vh - 12rem)"
-            language="plaintext"
-            value={fountain}
-            onChange={handleFountainChange}
-            onMount={handleEditorMount}
-            theme="vs-dark"
-            options={{
-              wordWrap: "off",
-              minimap: { enabled: false },
-              fontSize: 14,
-              fontFamily: "'Courier Prime', 'Courier New', monospace",
-              scrollBeyondLastLine: false,
-              automaticLayout: true,
-              padding: { top: 16, bottom: 16 },
-              lineNumbers: "on",
-              renderWhitespace: "none",
-              tabSize: 2,
-              scrollbar: {
-                vertical: "auto",
-                horizontal: "auto",
-                useShadows: false,
-                horizontalScrollbarSize: 10,
-                verticalScrollbarSize: 10,
-              },
-            }}
+        {!isMobile && !isExpanded && (
+          <SceneSidebar
+            scenes={scenes}
+            activeSceneIndex={activeSceneIndex}
+            onSelectScene={handleSelectScene}
           />
+        )}
+        <div
+          className="relative flex flex-col overflow-hidden"
+          style={{ 
+            width: isMobile 
+              ? "100%" 
+              : isExpanded 
+                ? "100%" 
+                : `${editorWidth}px` 
+          }}
+        >
+          <div className="flex-1 overflow-x-hidden overflow-y-auto rounded border border-gray-800 px-8">
+            <Editor
+              height="calc(100vh - 12rem)"
+              language="plaintext"
+              value={fountain}
+              onChange={handleFountainChange}
+              onMount={handleEditorMount}
+              theme="vs-dark"
+              options={{
+                wordWrap: "on",
+                wrappingStrategy: "advanced",
+                minimap: { enabled: false },
+                fontSize: 14,
+                fontFamily: "'Courier Prime', 'Courier New', monospace",
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+                padding: { top: 16, bottom: 16 },
+                lineNumbers: "on",
+                renderWhitespace: "none",
+                tabSize: 2,
+                overviewRulerLanes: 0,
+                scrollbar: {
+                  vertical: "auto",
+                  horizontal: "hidden",
+                  useShadows: false,
+                  alwaysConsumeMouseWheel: false,
+                  horizontalScrollbarSize: 0,
+                  verticalScrollbarSize: 10,
+                },
+              }}
+            />
+          </div>
+          {/* Page edge indicator */}
+          {!isMobile && <div className="absolute right-0 top-0 h-full w-px bg-gray-800/50" />}
         </div>
-        <div className="flex h-full w-[380px] flex-col border-l border-gray-800 bg-black/50 backdrop-blur-sm">
+        {/* Resize handle */}
+        {!isMobile && !isExpanded && (
+          <div
+            className={`relative w-[6px] cursor-col-resize bg-black transition-colors hover:bg-yellow-500/50 ${
+              isResizing ? "bg-yellow-500" : ""
+            }`}
+            onMouseDown={handleResizeStart}
+          />
+        )}
+        {!isMobile && !isExpanded && (
+          <div className="flex h-full w-[380px] flex-col border-l border-gray-800 bg-black/50 backdrop-blur-sm">
           <div className="border-b border-gray-800 p-4">
             <h2 className="text-lg font-black uppercase tracking-widest text-yellow-500">
               Writing Coach
@@ -726,7 +1113,8 @@ export function EditorClient({
               </div>
             )}
           </div>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

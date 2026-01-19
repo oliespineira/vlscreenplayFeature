@@ -44,3 +44,17 @@ export async function PUT(
 
   return NextResponse.json(script);
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ scriptId: string }> }
+) {
+  const { scriptId } = await params;
+  await requireScriptOwner(scriptId);
+
+  await prisma.script.delete({
+    where: { id: scriptId },
+  });
+
+  return NextResponse.json({ success: true });
+}

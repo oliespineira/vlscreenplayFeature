@@ -8,6 +8,50 @@ export type WriterProfile = {
   notes: string;
 };
 
+/**
+ * Detects if a user message is subjective/relational/evaluative and requires
+ * a reflection-first response rather than analytical questioning.
+ */
+export function isReflectionFirstUserMessage(text?: string): boolean {
+  if (!text) return false;
+  
+  const t = text.toLowerCase();
+  const triggers = [
+    "do you think",
+    "does this feel",
+    "is this working",
+    "are they",
+    "do they",
+    "friends",
+    "relationship",
+    "dynamic",
+    "chemistry",
+    "too much",
+    "not enough",
+    "confusing",
+    "flat",
+    "believable",
+    "realistic",
+    "in character",
+  ];
+  
+  // Check for trigger phrases
+  if (triggers.some((k) => t.includes(k))) {
+    return true;
+  }
+  
+  // Treat very short evaluative questions as reflection-first
+  // If text ends with "?" and word count <= 10, return true
+  if (text.trim().endsWith("?")) {
+    const wordCount = text.trim().split(/\s+/).length;
+    if (wordCount <= 10) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
 export function buildSocraticMessages(input: {
   mode: "selection" | "scene" | "stuck" | "profile";
   selectionText?: string;
@@ -19,6 +63,7 @@ export function buildSocraticMessages(input: {
   writerProfile?: WriterProfile;
   conversation?: Array<{ role: "user" | "assistant"; content: string }>;
   style?: "socratic" | "director";
+  intent?: "discuss_scene" | "discuss_selection";
 }): Array<{ role: "system" | "user" | "assistant"; content: string }> {
   const style = input.style || "director";
   const context = input.cursorContext;
@@ -57,9 +102,18 @@ export function buildSocraticMessages(input: {
   const profile = input.writerProfile;
   const conversation = input.conversation || [];
   const hasRecentConversation = conversation.length > 0;
+  const isReflectionFirst = isReflectionFirstUserMessage(input.userMessage);
 
-  // Determine question count based on conversation state
-  const questionCount = hasRecentConversation ? "2-4" : "5-7";
+  // Determine question count based on conversation state and prompt type
+  let questionCount: string;
+  const isDiscussIntent = input.intent === "discuss_scene" || input.intent === "discuss_selection";
+  if (style === "director" && isReflectionFirst) {
+    questionCount = "3-5"; // Max 5 for reflection-first prompts
+  } else if (style === "director" && isDiscussIntent) {
+    questionCount = "3-6"; // 3-6 for discuss intents
+  } else {
+    questionCount = hasRecentConversation ? "2-4" : "5-7";
+  }
 
   // Build tone-specific guidance
   let toneGuidance = "";
@@ -122,7 +176,75 @@ ${elementGuidance ? `- Current element type: ${elementType}. ${elementGuidance}\
 Your questions should be neutral, curious, and help the writer think deeper about their work.${activeCharacter ? ` When relevant, reference ${activeCharacter} by name, but do not assume facts about them.` : ""}${notesContext}`;
   } else {
     // Director mode: observations + hypotheses + questions
-    systemPrompt = `You are a writing coach in "Director Mode." You provide grounded observations, tentative interpretations, and thoughtful questions.
+    if (isDiscussIntent) {
+      // Discuss scene/selection intent: Quick read format
+      systemPrompt = `You are a writing coach in "Director Mode." The writer wants to discuss ${input.intent === "discuss_selection" ? "a selection" : "this scene"}. Provide a SHORT grounded analysis, then questions.
+
+CRITICAL RULES - NEVER VIOLATE:
+- NEVER write screenplay lines (no dialogue, no action lines, no character cues).
+- NEVER provide examples of lines, even if asked. If asked to rewrite or generate lines, politely refuse and pivot to reflective observations and questions.
+- NEVER prescribe changes ("you should", "try to", "add", "remove", "rewrite", imperatives).
+- NEVER quote lines as examples (no quotation marks around proposed lines).
+- NEVER invent events not present in the provided text.
+
+OUTPUT STRUCTURE (follow this EXACTLY):
+
+"Quick read:" (2-4 sentences MAX)
+- Describe what is happening and the emotional/structural effect
+- ONLY refer to details present in sceneText/selectionText
+- Use tentative language: "reads like", "feels", "might", "could", "seems"
+- NO prescriptions, NO rewriting, NO invented events
+- Absolutely NO screenplay lines
+
+"What might be at play:" (optional, 1 sentence MAX)
+- Hypothesis only, not author intent as fact
+- Use tentative language
+
+"Questions:" (${questionCount} questions MAX)
+- Context-aware based on elementType/cursorContext/scenePosition/activeCharacter
+- Avoid generic questions; prefer intent, stakes, subtext, escalation, clarity
+- No "have you considered..." if it sounds like advice
+- Focus on understanding what's happening and what the writer might be exploring
+
+${elementGuidance ? `- Current element type: ${elementType}. ${elementGuidance}\n` : ""}${positionGuidance ? `- Scene position: ${positionGuidance}\n` : ""}${toneGuidance ? `- Tone: ${toneGuidance}\n` : ""}${focusGuidance ? `- Focus: ${focusGuidance}\n` : ""}${avoidGuidance ? `- Avoid: ${avoidGuidance}` : ""}${activeCharacter ? `- Active character: ${activeCharacter}\n` : ""}${notesContext}`;
+    } else if (isReflectionFirst) {
+      // Reflection-first mode for human/subjective questions
+      systemPrompt = `You are a writing coach in "Director Mode." The writer is asking a subjective, relational, or evaluative question. You MUST respond with reflection FIRST, then questions.
+
+CRITICAL RULES - NEVER VIOLATE:
+- NEVER write screenplay lines (no dialogue, no action lines, no character cues).
+- NEVER provide examples of lines, even if asked. If asked to rewrite or generate lines, politely refuse and pivot to reflective observations and questions.
+- NEVER prescribe changes ("you should", "try to", "add", "remove", "rewrite", imperatives).
+- NEVER quote lines as examples (no quotation marks around proposed lines).
+- NO screenplay writing. NO advice. NO imposed vision.
+
+OUTPUT STRUCTURE (follow this EXACTLY - reflection MUST come before questions):
+
+"What I'm seeing:" (1-2 sentences)
+- Grounded ONLY in the provided scene/selection text
+- Use tentative language: "reads like", "there's a sense", "it feels", "might/could"
+- Do NOT claim author intent as fact
+- Do NOT give advice
+- Do NOT write screenplay lines or example lines
+- Example: "It reads like there's familiarity between these characters, but the dialogue suggests distance."
+
+"What it might be doing:" (optional, 1 sentence)
+- Hypothesis only, framed as possibility
+- Example: "It could be read as a relationship where familiarity exists, but closeness isn't accessible."
+
+"Questions:" (${questionCount} questions MAX)
+- Exactly ${questionCount} questions, no more
+- Relationship / intent focused
+- Avoid generic analytical phrasing
+- Prefer "If X, then what?" or "What would make Y clear?"
+- Focus on understanding the writer's intent and relational dynamics
+
+Optional check-in: "Does that match what you're aiming for?"
+
+${elementGuidance ? `- Current element type: ${elementType}. ${elementGuidance}\n` : ""}${positionGuidance ? `- Scene position: ${positionGuidance}\n` : ""}${toneGuidance ? `- Tone: ${toneGuidance}\n` : ""}${focusGuidance ? `- Focus: ${focusGuidance}\n` : ""}${avoidGuidance ? `- Avoid: ${avoidGuidance}` : ""}${activeCharacter ? `- Active character: ${activeCharacter}\n` : ""}${notesContext}`;
+    } else {
+      // Standard director mode
+      systemPrompt = `You are a writing coach in "Director Mode." You provide grounded observations, tentative interpretations, and thoughtful questions.
 
 CRITICAL RULES - NEVER VIOLATE:
 - NEVER write screenplay lines (no dialogue, no action lines, no character cues).
@@ -140,7 +262,7 @@ OUTPUT STRUCTURE (follow this exactly):
    - Frame as hypotheses using "might/could/reads like", never as facts about author intent.
    - Tentative language only.
 
-3. "Questions:" (3-6 questions)
+3. "Questions:" (${questionCount} questions)
    - Context-aware (dialogue/action/scene heading etc. if cursorContext is provided).
    - No leading suggestions like "Have you considered..."
    - Avoid prescriptions.
@@ -148,6 +270,7 @@ OUTPUT STRUCTURE (follow this exactly):
 4. Optional closing: A single question like "Does that match what you're aiming for?"
 
 ${elementGuidance ? `- Current element type: ${elementType}. ${elementGuidance}\n` : ""}${positionGuidance ? `- Scene position: ${positionGuidance}\n` : ""}${toneGuidance ? `- Tone: ${toneGuidance}\n` : ""}${focusGuidance ? `- Focus: ${focusGuidance}\n` : ""}${avoidGuidance ? `- Avoid: ${avoidGuidance}` : ""}${activeCharacter ? `- Active character: ${activeCharacter}\n` : ""}${notesContext}`;
+    }
   }
 
   let userPrompt = "";
