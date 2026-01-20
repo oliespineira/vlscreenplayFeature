@@ -60,7 +60,7 @@ export function UploadScriptButtonGlobal() {
       }
 
       // Get or create a default project first (same logic as createScript)
-      let projectId: string;
+      let projectId: string | undefined;
       
       const projectResponse = await fetch("/api/projects", {
         method: "GET",
