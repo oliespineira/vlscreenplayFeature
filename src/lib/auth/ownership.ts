@@ -71,3 +71,27 @@ export async function requireProjectOwnerForApi(projectId: string, userId: strin
 
   return project;
 }
+
+interface AssertProjectOwnerOrThrowArgs {
+  projectId: string;
+  userId: string; // Clerk userId
+}
+
+export async function assertProjectOwnerOrThrow({
+  projectId,
+  userId,
+}: AssertProjectOwnerOrThrowArgs): Promise<void> {
+  const project = await prisma.project.findFirst({
+    where: {
+      id: projectId,
+      owner: {
+        clerkUserId: userId,
+      },
+    },
+  });
+
+  if (!project) {
+    throw new Error("FORBIDDEN_OR_NOT_FOUND");
+  }
+}
+

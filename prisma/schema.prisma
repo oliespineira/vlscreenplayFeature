@@ -27,6 +27,10 @@ model Project {
 
   owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   scripts   Script[]
+  lookbookDrafts      LookbookDraft[]
+  inspirationBoards   InspirationBoard[]
+  visualBibles        VisualBible[]
+  storyboardPromptSets StoryboardPromptSet[]
 }
 
 model Script {
@@ -88,4 +92,96 @@ model AgentMessage {
   thread    AgentThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
 
   @@index([threadId, createdAt])
+}
+
+model LookbookDraft {
+  id                  String   @id @default(cuid())
+  projectId           String
+  scriptId            String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  logline             String?
+  genreTags           String[]
+  timePeriod          String?
+  toneKeywords        String[]
+  lensLanguage        String
+  lightingMotifs      String[]
+  palette             Json
+  compositionRules    String[]
+  cameraMovementRules String[]
+  referencesSeed      Json
+
+  knobs               Json?
+  source              Json?
+
+  project             Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  inspirationBoards   InspirationBoard[]
+  visualBibles        VisualBible[]
+
+  @@index([projectId])
+}
+
+model InspirationBoard {
+  id         String   @id @default(cuid())
+  projectId  String
+  lookbookId String
+  createdAt  DateTime @default(now())
+
+  items      Json
+
+  project    Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  lookbook   LookbookDraft @relation(fields: [lookbookId], references: [id], onDelete: Cascade)
+
+  visualBibles VisualBible[]
+
+  @@index([projectId])
+  @@index([lookbookId])
+}
+
+model VisualBible {
+  id                  String   @id @default(cuid())
+  projectId           String
+  lookbookId          String
+  inspirationBoardId  String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  onePageSummary      String
+  doList              String[]
+  dontList            String[]
+  styleRules          Json
+  shotDesignPrinciples String[]
+  sceneOverrides      Json
+  ruleSources         Json?
+
+  project             Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  lookbook            LookbookDraft    @relation(fields: [lookbookId], references: [id], onDelete: Cascade)
+  inspirationBoard    InspirationBoard @relation(fields: [inspirationBoardId], references: [id], onDelete: Cascade)
+
+  storyboardPromptSets StoryboardPromptSet[]
+
+  @@index([projectId])
+}
+
+model StoryboardPromptSet {
+  id               String   @id @default(cuid())
+  projectId        String
+  visualBibleId    String
+  sceneId          String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  continuityHeader String
+  beats            Json
+  cohesionWarnings String[]
+  imageResultIds   String[]
+
+  project          Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  visualBible      VisualBible @relation(fields: [visualBibleId], references: [id], onDelete: Cascade)
+
+  @@unique([visualBibleId, sceneId])
+  @@index([projectId])
+  @@index([sceneId])
 }

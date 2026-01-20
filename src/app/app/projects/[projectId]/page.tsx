@@ -56,15 +56,21 @@ export default async function ProjectPage({
             Scripts
           </h2>
           <div className="flex items-center gap-4">
-            <UploadScriptButton projectId={projectId} />
-          <form action={createScript.bind(null, projectId)}>
-            <button
-              type="submit"
-              className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
+            <Link
+              href={`/app/projects/${projectId}/visual`}
+              className="rounded border border-yellow-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-yellow-500 transition-all hover:bg-yellow-500 hover:text-black active:scale-95"
             >
-              New Script
-            </button>
-          </form>
+              Visual Development
+            </Link>
+            <UploadScriptButton projectId={projectId} />
+            <form action={createScript.bind(null, projectId)}>
+              <button
+                type="submit"
+                className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
+              >
+                New Script
+              </button>
+            </form>
           </div>
         </div>
 
