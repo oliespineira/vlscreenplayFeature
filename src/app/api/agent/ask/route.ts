@@ -231,7 +231,7 @@ export async function POST(request: Request) {
       // Validate based on style
       try {
         if (responseStyle === "socratic") {
-          assertQuestionsOnly(assistantText);
+        assertQuestionsOnly(assistantText);
         } else {
           assertNonPrescriptiveNonGenerative(assistantText);
         }

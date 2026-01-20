@@ -11,14 +11,14 @@ export default async function AppHome() {
           Welcome Back
         </h1>
         <p className="mb-8 text-lg text-gray-400">
-          Continue writing your screenplays or start a new script.
+          Continue working on your projects or start a new one.
         </p>
         <div className="flex flex-col gap-4 sm:flex-row">
           <Link
             href="/app/projects"
             className="rounded bg-yellow-500 px-8 py-4 text-base font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
           >
-            View Scripts
+            View Projects
           </Link>
         </div>
       </div>

@@ -244,7 +244,7 @@ Optional check-in: "Does that match what you're aiming for?"
 ${elementGuidance ? `- Current element type: ${elementType}. ${elementGuidance}\n` : ""}${positionGuidance ? `- Scene position: ${positionGuidance}\n` : ""}${toneGuidance ? `- Tone: ${toneGuidance}\n` : ""}${focusGuidance ? `- Focus: ${focusGuidance}\n` : ""}${avoidGuidance ? `- Avoid: ${avoidGuidance}` : ""}${activeCharacter ? `- Active character: ${activeCharacter}\n` : ""}${notesContext}`;
     } else {
       // Standard director mode
-      systemPrompt = `You are a writing coach in "Director Mode." You provide grounded observations, tentative interpretations, and thoughtful questions.
+    systemPrompt = `You are a writing coach in "Director Mode." You provide grounded observations, tentative interpretations, and thoughtful questions.
 
 CRITICAL RULES - NEVER VIOLATE:
 - NEVER write screenplay lines (no dialogue, no action lines, no character cues).

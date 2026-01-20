@@ -57,14 +57,14 @@ export default async function ProjectPage({
           </h2>
           <div className="flex items-center gap-4">
             <UploadScriptButton projectId={projectId} />
-            <form action={createScript.bind(null, projectId)}>
-              <button
-                type="submit"
-                className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
-              >
-                New Script
-              </button>
-            </form>
+          <form action={createScript.bind(null, projectId)}>
+            <button
+              type="submit"
+              className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
+            >
+              New Script
+            </button>
+          </form>
           </div>
         </div>
 
@@ -73,14 +73,14 @@ export default async function ProjectPage({
             <p className="mb-4 text-lg text-gray-400">No scripts yet.</p>
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <UploadScriptButton projectId={projectId} />
-              <form action={createScript.bind(null, projectId)} className="inline-block">
-                <button
-                  type="submit"
-                  className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
-                >
-                  Create Your First Script
-                </button>
-              </form>
+            <form action={createScript.bind(null, projectId)} className="inline-block">
+              <button
+                type="submit"
+                className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
+              >
+                Create Your First Script
+              </button>
+            </form>
             </div>
           </div>
         ) : (
@@ -91,13 +91,13 @@ export default async function ProjectPage({
                 className="group relative rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm transition-all hover:border-yellow-500 hover:bg-black/70"
               >
                 <Link href={`/app/projects/${projectId}/scripts/${script.id}/editor`} className="block">
-                  <h3 className="mb-2 text-xl font-bold uppercase tracking-widest text-white group-hover:text-yellow-500">
-                    {script.title}
-                  </h3>
-                  <p className="text-sm text-gray-500">
-                    Updated {new Date(script.updatedAt).toLocaleDateString()}
-                  </p>
-                </Link>
+                <h3 className="mb-2 text-xl font-bold uppercase tracking-widest text-white group-hover:text-yellow-500">
+                  {script.title}
+                </h3>
+                <p className="text-sm text-gray-500">
+                  Updated {new Date(script.updatedAt).toLocaleDateString()}
+                </p>
+              </Link>
                 <div className="mt-4 flex justify-end opacity-0 transition-opacity group-hover:opacity-100">
                   <DeleteScriptButton scriptId={script.id} scriptTitle={script.title} />
                 </div>

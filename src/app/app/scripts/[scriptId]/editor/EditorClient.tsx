@@ -741,8 +741,8 @@ export function EditorClient({
         // Check if response is JSON
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.includes("application/json")) {
-          const error = await response.json();
-          throw new Error(error.error || "Failed to get questions");
+        const error = await response.json();
+        throw new Error(error.error || "Failed to get questions");
         } else {
           // Handle HTML error pages
           const text = await response.text();
@@ -927,11 +927,11 @@ export function EditorClient({
 
       <div className="flex flex-1 overflow-hidden">
         {!isMobile && !isExpanded && (
-          <SceneSidebar
-            scenes={scenes}
-            activeSceneIndex={activeSceneIndex}
-            onSelectScene={handleSelectScene}
-          />
+        <SceneSidebar
+          scenes={scenes}
+          activeSceneIndex={activeSceneIndex}
+          onSelectScene={handleSelectScene}
+        />
         )}
         <div
           className="relative flex flex-col overflow-hidden"
@@ -944,37 +944,37 @@ export function EditorClient({
           }}
         >
           <div className="flex-1 overflow-x-hidden overflow-y-auto rounded border border-gray-800 px-8">
-            <Editor
-              height="calc(100vh - 12rem)"
-              language="plaintext"
-              value={fountain}
-              onChange={handleFountainChange}
-              onMount={handleEditorMount}
-              theme="vs-dark"
-              options={{
+          <Editor
+            height="calc(100vh - 12rem)"
+            language="plaintext"
+            value={fountain}
+            onChange={handleFountainChange}
+            onMount={handleEditorMount}
+            theme="vs-dark"
+            options={{
                 wordWrap: "on",
                 wrappingStrategy: "advanced",
-                minimap: { enabled: false },
-                fontSize: 14,
-                fontFamily: "'Courier Prime', 'Courier New', monospace",
-                scrollBeyondLastLine: false,
-                automaticLayout: true,
-                padding: { top: 16, bottom: 16 },
-                lineNumbers: "on",
-                renderWhitespace: "none",
-                tabSize: 2,
+              minimap: { enabled: false },
+              fontSize: 14,
+              fontFamily: "'Courier Prime', 'Courier New', monospace",
+              scrollBeyondLastLine: false,
+              automaticLayout: true,
+              padding: { top: 16, bottom: 16 },
+              lineNumbers: "on",
+              renderWhitespace: "none",
+              tabSize: 2,
                 overviewRulerLanes: 0,
-                scrollbar: {
-                  vertical: "auto",
+              scrollbar: {
+                vertical: "auto",
                   horizontal: "hidden",
-                  useShadows: false,
+                useShadows: false,
                   alwaysConsumeMouseWheel: false,
                   horizontalScrollbarSize: 0,
-                  verticalScrollbarSize: 10,
-                },
-              }}
-            />
-          </div>
+                verticalScrollbarSize: 10,
+              },
+            }}
+          />
+        </div>
           {/* Page edge indicator */}
           {!isMobile && <div className="absolute right-0 top-0 h-full w-px bg-gray-800/50" />}
         </div>
@@ -988,7 +988,7 @@ export function EditorClient({
           />
         )}
         {!isMobile && !isExpanded && (
-          <div className="flex h-full w-[380px] flex-col border-l border-gray-800 bg-black/50 backdrop-blur-sm">
+        <div className="flex h-full w-[380px] flex-col border-l border-gray-800 bg-black/50 backdrop-blur-sm">
           <div className="border-b border-gray-800 p-4">
             <h2 className="text-lg font-black uppercase tracking-widest text-yellow-500">
               Writing Coach
@@ -1113,7 +1113,7 @@ export function EditorClient({
               </div>
             )}
           </div>
-          </div>
+        </div>
         )}
       </div>
     </div>
