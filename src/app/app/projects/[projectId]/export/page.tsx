@@ -1,4 +1,5 @@
 import { requireProjectOwner } from "@/lib/auth/ownership";
+import { prisma } from "@/lib/db/prisma";
 import { ExportPanel } from "@/components/Export/ExportPanel";
 
 export default async function ExportPage({
@@ -8,6 +9,16 @@ export default async function ExportPage({
 }) {
   const { projectId } = await params;
   const project = await requireProjectOwner(projectId);
+
+  const scripts = await prisma.script.findMany({
+    where: { projectId },
+    select: {
+      id: true,
+      title: true,
+      updatedAt: true,
+    },
+    orderBy: { updatedAt: "desc" },
+  });
 
   return (
     <div className="min-h-screen">
@@ -21,7 +32,7 @@ export default async function ExportPage({
           </p>
         </div>
 
-        <ExportPanel projectId={projectId} />
+        <ExportPanel projectId={projectId} scripts={scripts} />
       </div>
     </div>
   );

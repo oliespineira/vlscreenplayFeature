@@ -2,16 +2,31 @@
 
 import { useState } from "react";
 
-interface ExportPanelProps {
-  projectId: string;
+interface Script {
+  id: string;
+  title: string;
+  updatedAt: Date;
 }
 
-export function ExportPanel({ projectId }: ExportPanelProps) {
+interface ExportPanelProps {
+  projectId: string;
+  scripts: Script[];
+}
+
+export function ExportPanel({ projectId, scripts }: ExportPanelProps) {
+  const [selectedScriptId, setSelectedScriptId] = useState<string | null>(
+    scripts.length > 0 ? scripts[0].id : null
+  );
   const [exporting, setExporting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
   const handleExport = async (type: "dossier" | "script" | "storyboard") => {
+    if (!selectedScriptId) {
+      setError("Please select a script to export");
+      return;
+    }
+
     setExporting(type);
     setError(null);
     setSuccess(null);
@@ -19,6 +34,10 @@ export function ExportPanel({ projectId }: ExportPanelProps) {
     try {
       const res = await fetch(`/api/projects/${projectId}/export/${type}`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ scriptId: selectedScriptId }),
       });
 
       if (!res.ok) {
@@ -84,8 +103,40 @@ export function ExportPanel({ projectId }: ExportPanelProps) {
     }
   };
 
+  if (scripts.length === 0) {
+    return (
+      <div className="rounded-lg border border-gray-800 bg-black/50 p-12 text-center backdrop-blur-sm">
+        <p className="mb-4 text-lg text-gray-400">No scripts found in this project.</p>
+        <p className="text-sm text-gray-500">
+          Create a script first before exporting.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
+      {/* Script Selector */}
+      <div className="rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm">
+        <label className="mb-3 block text-sm font-medium uppercase tracking-wider text-gray-300">
+          Select Script to Export
+        </label>
+        <select
+          value={selectedScriptId || ""}
+          onChange={(e) => setSelectedScriptId(e.target.value)}
+          className="w-full rounded border border-gray-800 bg-black/50 px-4 py-3 text-white focus:border-pink-400 focus:outline-none"
+        >
+          {scripts.map((script) => (
+            <option key={script.id} value={script.id}>
+              {script.title} (Updated {new Date(script.updatedAt).toLocaleDateString()})
+            </option>
+          ))}
+        </select>
+        <p className="mt-2 text-xs text-gray-500">
+          Choose which script you want to export
+        </p>
+      </div>
+
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         {/* Export Dossier */}
         <button

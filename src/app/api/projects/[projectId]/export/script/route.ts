@@ -12,21 +12,30 @@ export async function POST(
     const { projectId } = await params;
     await requireProjectOwnerForApi(projectId, user.id);
 
-    // Get the most recent script
-    const scripts = await prisma.script.findMany({
-      where: { projectId },
-      orderBy: { updatedAt: "desc" },
-      take: 1,
-    });
+    const body = await request.json();
+    const scriptId = body.scriptId;
 
-    if (scripts.length === 0) {
+    if (!scriptId || typeof scriptId !== "string") {
       return NextResponse.json(
-        { error: "No script found for this project" },
-        { status: 404 }
+        { error: "scriptId is required" },
+        { status: 400 }
       );
     }
 
-    const script = scripts[0];
+    // Verify script belongs to project
+    const script = await prisma.script.findFirst({
+      where: {
+        id: scriptId,
+        projectId,
+      },
+    });
+
+    if (!script) {
+      return NextResponse.json(
+        { error: "Script not found or does not belong to this project" },
+        { status: 404 }
+      );
+    }
 
     // TODO: Implement script export
     // This should:

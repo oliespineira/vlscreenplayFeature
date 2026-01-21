@@ -75,6 +75,32 @@ export function TopNav() {
     }
   };
 
+  // Only show navigation panels when a project is selected
+  if (!projectId) {
+    return (
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-gray-800 bg-black/90 backdrop-blur-md">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between gap-4">
+            {/* Left: Brand / Logo */}
+            <div className="flex items-center gap-4">
+              <Link
+                href="/app"
+                className="text-xl font-black uppercase tracking-widest text-yellow-500 transition-opacity hover:opacity-70"
+              >
+                DION
+              </Link>
+            </div>
+
+            {/* Right: User / Actions */}
+            <div className="flex items-center gap-3">
+              <UserButton afterSignOutUrl="/" />
+            </div>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-gray-800 bg-black/90 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -87,7 +113,7 @@ export function TopNav() {
             >
               DION
             </Link>
-            {projectId && projectTitle && (
+            {projectTitle && (
               <div className="hidden items-center gap-2 sm:flex">
                 <span className="text-xs text-gray-500">/</span>
                 <span className="text-sm font-medium uppercase tracking-wider text-gray-300">

@@ -12,6 +12,31 @@ export async function POST(
     const { projectId } = await params;
     await requireProjectOwnerForApi(projectId, user.id);
 
+    const body = await request.json();
+    const scriptId = body.scriptId;
+
+    if (!scriptId || typeof scriptId !== "string") {
+      return NextResponse.json(
+        { error: "scriptId is required" },
+        { status: 400 }
+      );
+    }
+
+    // Verify script belongs to project
+    const script = await prisma.script.findFirst({
+      where: {
+        id: scriptId,
+        projectId,
+      },
+    });
+
+    if (!script) {
+      return NextResponse.json(
+        { error: "Script not found or does not belong to this project" },
+        { status: 404 }
+      );
+    }
+
     // TODO: Implement dossier export
     // This should generate a comprehensive PDF/document with:
     // - Project metadata
