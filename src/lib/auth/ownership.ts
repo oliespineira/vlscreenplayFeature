@@ -7,6 +7,13 @@ export async function requireProjectOwner(projectId: string) {
 
   const project = await prisma.project.findUnique({
     where: { id: projectId },
+    select: {
+      id: true,
+      ownerId: true,
+      title: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 
   if (!project || project.ownerId !== user.id) {
@@ -21,7 +28,7 @@ export async function requireScriptOwner(scriptId: string) {
 
   const script = await prisma.script.findUnique({
     where: { id: scriptId },
-    include: { project: true },
+    include: { project: { select: { ownerId: true } } },
   });
 
   if (!script || script.project.ownerId !== user.id) {
@@ -38,7 +45,7 @@ export async function requireScriptOwner(scriptId: string) {
 export async function requireScriptOwnerForApi(scriptId: string, userId: string) {
   const script = await prisma.script.findUnique({
     where: { id: scriptId },
-    include: { project: true },
+    include: { project: { select: { ownerId: true } } },
   });
 
   if (!script) {
@@ -59,6 +66,7 @@ export async function requireScriptOwnerForApi(scriptId: string, userId: string)
 export async function requireProjectOwnerForApi(projectId: string, userId: string) {
   const project = await prisma.project.findUnique({
     where: { id: projectId },
+    select: { id: true, ownerId: true },
   });
 
   if (!project) {
@@ -88,6 +96,7 @@ export async function assertProjectOwnerOrThrow({
         clerkUserId: userId,
       },
     },
+    select: { id: true },
   });
 
   if (!project) {

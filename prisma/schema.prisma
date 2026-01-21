@@ -22,6 +22,9 @@ model Project {
   id        String   @id @default(uuid())
   ownerId   String
   title     String
+  description String @db.Text @default("")
+  scriptText  String @db.Text @default("")
+  scriptAnalysis Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

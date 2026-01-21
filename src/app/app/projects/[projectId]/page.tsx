@@ -62,6 +62,12 @@ export default async function ProjectPage({
             >
               Visual Development
             </Link>
+            <Link
+              href={`/app/projects/${projectId}/analysis`}
+              className="rounded border border-yellow-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-yellow-500 transition-all hover:bg-yellow-500 hover:text-black active:scale-95"
+            >
+              Script Analysis
+            </Link>
             <UploadScriptButton projectId={projectId} />
             <form action={createScript.bind(null, projectId)}>
               <button

@@ -2,17 +2,29 @@
  * Extracts plain text from a PDF file
  */
 export async function pdfToText(file: File): Promise<string> {
-  // Dynamic import to avoid SSR issues
-  const pdfjsLib = await import("pdfjs-dist");
-  
-  // Set worker source for Next.js compatibility
-  const version = pdfjsLib.version;
-  (pdfjsLib as any).GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`;
-
   const arrayBuffer = await file.arrayBuffer();
-  const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+
+  // handle server and browser separately
+  // browser: use the default build + remote worker
+  // server: use the legacy build and disable workers
+  const isServer = typeof window === "undefined";
+
+  const pdfjsLib = isServer
+    ? await import("pdfjs-dist/legacy/build/pdf.mjs")
+    : await import("pdfjs-dist");
+
+  if (!isServer) {
+    const version = (pdfjsLib as any).version;
+    (pdfjsLib as any).GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`;
+  }
+
+  const loadingTask = (pdfjsLib as any).getDocument(
+    isServer
+      ? { data: new Uint8Array(arrayBuffer), disableWorker: true }
+      : { data: arrayBuffer }
+  );
   const pdf = await loadingTask.promise;
-  
+
   const textParts: string[] = [];
   
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
