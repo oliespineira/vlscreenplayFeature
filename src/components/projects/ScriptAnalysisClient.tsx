@@ -162,7 +162,7 @@ export function ScriptAnalysisClient({
               type="file"
               accept=".pdf,.txt,.docx"
               onChange={onUpload}
-              className="block w-full text-sm text-gray-300 file:mr-4 file:rounded file:border-0 file:bg-yellow-500 file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:tracking-widest file:text-black hover:file:bg-yellow-400"
+              className="block w-full text-sm text-gray-300 file:mr-4 file:rounded file:border-0 file:bg-[#FF4F00] file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:tracking-widest file:text-black hover:file:bg-[#FF6B2B]"
             />
             <p className="mt-2 text-xs text-gray-500">
               pdf, docx, txt (max 15mb)
@@ -172,7 +172,7 @@ export function ScriptAnalysisClient({
           <button
             onClick={analyze}
             disabled={!file || loading}
-            className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded bg-[#FF4F00] px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-[#FF6B2B] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? "Analyzing..." : "Analyze & Fill Presentation"}
           </button>
@@ -202,7 +202,7 @@ export function ScriptAnalysisClient({
                     setSnapshot(analysis);
                     setIsEditing(true);
                   }}
-                  className="rounded border border-gray-700 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 transition-all hover:border-yellow-500 hover:text-yellow-500"
+                  className="rounded border border-gray-700 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 transition-all hover:border-[#FF4F00] hover:text-[#FF4F00]"
                 >
                   Make Changes
                 </button>
@@ -210,7 +210,7 @@ export function ScriptAnalysisClient({
                 <>
                   <button
                     onClick={saveChanges}
-                    className="rounded border border-gray-700 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 transition-all hover:border-yellow-500 hover:text-yellow-500"
+                    className="rounded border border-gray-700 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 transition-all hover:border-[#FF4F00] hover:text-[#FF4F00]"
                   >
                     Save Changes
                   </button>
@@ -227,7 +227,7 @@ export function ScriptAnalysisClient({
               )}
               <button
                 onClick={applyToProject}
-                className="rounded bg-yellow-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-black transition-all hover:bg-yellow-400 active:scale-95"
+                className="rounded bg-[#FF4F00] px-4 py-2 text-xs font-bold uppercase tracking-widest text-black transition-all hover:bg-[#FF6B2B] active:scale-95"
               >
                 Apply to Project
               </button>
@@ -236,12 +236,12 @@ export function ScriptAnalysisClient({
 
           <div className="grid gap-4">
             <section className="rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm">
-              <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-yellow-500">
+              <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-[#FF4F00]">
                 Logline
               </h4>
               {isEditing ? (
                 <textarea
-                  className="w-full rounded border border-gray-800 bg-black/60 p-3 text-sm text-gray-200 outline-none focus:border-yellow-500"
+                  className="w-full rounded border border-gray-800 bg-black/60 p-3 text-sm text-gray-200 outline-none focus:border-[#FF4F00]"
                   rows={3}
                   value={analysis.logline}
                   onChange={(e) =>
@@ -256,12 +256,12 @@ export function ScriptAnalysisClient({
             </section>
 
             <section className="rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm">
-              <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-yellow-500">
+              <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-[#FF4F00]">
                 Main Theme
               </h4>
               {isEditing ? (
                 <textarea
-                  className="w-full rounded border border-gray-800 bg-black/60 p-3 text-sm text-gray-200 outline-none focus:border-yellow-500"
+                  className="w-full rounded border border-gray-800 bg-black/60 p-3 text-sm text-gray-200 outline-none focus:border-[#FF4F00]"
                   rows={3}
                   value={analysis.main_theme}
                   onChange={(e) =>
@@ -278,12 +278,12 @@ export function ScriptAnalysisClient({
             </section>
 
             <section className="rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm">
-              <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-yellow-500">
+              <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-[#FF4F00]">
                 Tone
               </h4>
               {isEditing ? (
                 <input
-                  className="w-full rounded border border-gray-800 bg-black/60 p-2 text-sm text-gray-200 outline-none focus:border-yellow-500"
+                  className="w-full rounded border border-gray-800 bg-black/60 p-2 text-sm text-gray-200 outline-none focus:border-[#FF4F00]"
                   value={analysis.tone}
                   onChange={(e) =>
                     setAnalysis((a) => (a ? { ...a, tone: e.target.value } : a))
@@ -295,7 +295,7 @@ export function ScriptAnalysisClient({
             </section>
 
             <section className="rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm">
-              <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-yellow-500">
+              <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-[#FF4F00]">
                 Characters
               </h4>
               {isEditing ? (
@@ -307,7 +307,7 @@ export function ScriptAnalysisClient({
                     >
                       <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                         <input
-                          className="rounded border border-gray-800 bg-black/70 p-2 text-sm text-gray-200 outline-none focus:border-yellow-500"
+                          className="rounded border border-gray-800 bg-black/70 p-2 text-sm text-gray-200 outline-none focus:border-[#FF4F00]"
                           placeholder="Name"
                           value={c.name}
                           onChange={(e) => {
@@ -317,7 +317,7 @@ export function ScriptAnalysisClient({
                           }}
                         />
                         <input
-                          className="rounded border border-gray-800 bg-black/70 p-2 text-sm text-gray-200 outline-none focus:border-yellow-500"
+                          className="rounded border border-gray-800 bg-black/70 p-2 text-sm text-gray-200 outline-none focus:border-[#FF4F00]"
                           placeholder="Role"
                           value={c.role || ""}
                           onChange={(e) => {
@@ -328,7 +328,7 @@ export function ScriptAnalysisClient({
                         />
                       </div>
                       <textarea
-                        className="w-full rounded border border-gray-800 bg-black/70 p-2 text-sm text-gray-200 outline-none focus:border-yellow-500"
+                        className="w-full rounded border border-gray-800 bg-black/70 p-2 text-sm text-gray-200 outline-none focus:border-[#FF4F00]"
                         placeholder="Description"
                         rows={3}
                         value={c.description}
@@ -353,7 +353,7 @@ export function ScriptAnalysisClient({
                     </div>
                   ))}
                   <button
-                    className="rounded border border-gray-700 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 transition-all hover:border-yellow-500 hover:text-yellow-500"
+                    className="rounded border border-gray-700 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 transition-all hover:border-[#FF4F00] hover:text-[#FF4F00]"
                     onClick={() => {
                       const next = [
                         ...analysis.characters,
@@ -372,7 +372,7 @@ export function ScriptAnalysisClient({
                     <li key={i} className="text-gray-300">
                       <strong className="text-white">{c.name || "Unnamed"}</strong>
                       {c.role && (
-                        <span className="ml-2 text-yellow-500">({c.role})</span>
+                        <span className="ml-2 text-[#FF4F00]">({c.role})</span>
                       )}
                       {c.description && (
                         <p className="mt-1 whitespace-pre-wrap text-sm text-gray-500">
@@ -386,12 +386,12 @@ export function ScriptAnalysisClient({
             </section>
 
             <section className="rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm">
-              <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-yellow-500">
+              <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-[#FF4F00]">
                 Deeper Theme Analysis
               </h4>
               {isEditing ? (
                 <textarea
-                  className="w-full rounded border border-gray-800 bg-black/60 p-3 text-sm text-gray-200 outline-none focus:border-yellow-500"
+                  className="w-full rounded border border-gray-800 bg-black/60 p-3 text-sm text-gray-200 outline-none focus:border-[#FF4F00]"
                   rows={6}
                   value={analysis.theme_analysis}
                   onChange={(e) =>
@@ -409,7 +409,7 @@ export function ScriptAnalysisClient({
 
             {analysis.look && (
               <section className="rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm">
-                <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-yellow-500">
+                <h4 className="mb-3 text-sm font-bold uppercase tracking-widest text-[#FF4F00]">
                   Look & Aesthetic
                 </h4>
 
@@ -420,7 +420,7 @@ export function ScriptAnalysisClient({
                     </h5>
                     {isEditing ? (
                       <input
-                        className="w-full rounded border border-gray-800 bg-black/60 p-2 text-sm text-gray-200 outline-none focus:border-yellow-500"
+                        className="w-full rounded border border-gray-800 bg-black/60 p-2 text-sm text-gray-200 outline-none focus:border-[#FF4F00]"
                         value={analysis.look.aesthetic}
                         onChange={(e) =>
                           setAnalysis((a) =>
@@ -454,7 +454,7 @@ export function ScriptAnalysisClient({
                         {analysis.look.color_palette.map((color, i) => (
                           <div key={i} className="flex items-center gap-2">
                             <input
-                              className="flex-1 rounded border border-gray-800 bg-black/60 p-2 text-sm text-gray-200 outline-none focus:border-yellow-500"
+                              className="flex-1 rounded border border-gray-800 bg-black/60 p-2 text-sm text-gray-200 outline-none focus:border-[#FF4F00]"
                               value={color}
                               onChange={(e) => {
                                 const next = [...analysis.look!.color_palette];
@@ -481,7 +481,7 @@ export function ScriptAnalysisClient({
                           </div>
                         ))}
                         <button
-                          className="rounded border border-gray-700 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 transition-all hover:border-yellow-500 hover:text-yellow-500"
+                          className="rounded border border-gray-700 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 transition-all hover:border-[#FF4F00] hover:text-[#FF4F00]"
                           onClick={() => {
                             const next = [...(analysis.look?.color_palette || []), ""];
                             setAnalysis((a) =>
@@ -516,7 +516,7 @@ export function ScriptAnalysisClient({
                         {analysis.look.visual_references.map((ref, i) => (
                           <div key={i} className="flex items-center gap-2">
                             <input
-                              className="flex-1 rounded border border-gray-800 bg-black/60 p-2 text-sm text-gray-200 outline-none focus:border-yellow-500"
+                              className="flex-1 rounded border border-gray-800 bg-black/60 p-2 text-sm text-gray-200 outline-none focus:border-[#FF4F00]"
                               value={ref}
                               onChange={(e) => {
                                 const next = [...analysis.look!.visual_references];
@@ -559,7 +559,7 @@ export function ScriptAnalysisClient({
                           </div>
                         ))}
                         <button
-                          className="rounded border border-gray-700 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 transition-all hover:border-yellow-500 hover:text-yellow-500"
+                          className="rounded border border-gray-700 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 transition-all hover:border-[#FF4F00] hover:text-[#FF4F00]"
                           onClick={() => {
                             const next = [...(analysis.look?.visual_references || []), ""];
                             setAnalysis((a) =>

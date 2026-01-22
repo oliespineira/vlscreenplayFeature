@@ -102,7 +102,7 @@ export function VisualsBreakdownClient({
     <div className="space-y-8">
       {/* Project Header */}
       <div className="space-y-4">
-        <h1 className="text-4xl font-black uppercase tracking-widest text-yellow-500 sm:text-5xl">
+        <h1 className="text-4xl font-black uppercase tracking-widest text-[#FF4F00] sm:text-5xl">
           {projectTitle}
         </h1>
 

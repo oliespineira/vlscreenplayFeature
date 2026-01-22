@@ -42,11 +42,11 @@ export default async function ProjectPage({
         <div className="mb-8">
           <Link
             href="/app/projects"
-            className="mb-4 inline-block text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-yellow-500"
+            className="mb-4 inline-block text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-[#FF4F00]"
           >
             ← Back to Projects
           </Link>
-          <h1 className="text-3xl font-black uppercase tracking-widest text-yellow-500 sm:text-4xl">
+          <h1 className="text-3xl font-black uppercase tracking-widest text-[#FF4F00] sm:text-4xl">
             {project.title}
           </h1>
         </div>
@@ -58,13 +58,13 @@ export default async function ProjectPage({
           <div className="flex items-center gap-4">
             <Link
               href={`/app/projects/${projectId}/visual`}
-              className="rounded border border-yellow-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-yellow-500 transition-all hover:bg-yellow-500 hover:text-black active:scale-95"
+              className="rounded border border-[#FF4F00] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#FF4F00] transition-all hover:bg-[#FF4F00] hover:text-black active:scale-95"
             >
               Visual Development
             </Link>
             <Link
               href={`/app/projects/${projectId}/analysis`}
-              className="rounded border border-yellow-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-yellow-500 transition-all hover:bg-yellow-500 hover:text-black active:scale-95"
+              className="rounded border border-[#FF4F00] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#FF4F00] transition-all hover:bg-[#FF4F00] hover:text-black active:scale-95"
             >
               Script Analysis
             </Link>
@@ -72,7 +72,7 @@ export default async function ProjectPage({
             <form action={createScript.bind(null, projectId)}>
               <button
                 type="submit"
-                className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
+                className="rounded bg-[#FF4F00] px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-[#FF6B2B] active:scale-95"
               >
                 New Script
               </button>
@@ -88,7 +88,7 @@ export default async function ProjectPage({
             <form action={createScript.bind(null, projectId)} className="inline-block">
               <button
                 type="submit"
-                className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
+                className="rounded bg-[#FF4F00] px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-[#FF6B2B] active:scale-95"
               >
                 Create Your First Script
               </button>
@@ -100,10 +100,10 @@ export default async function ProjectPage({
             {scripts.map((script: Awaited<ReturnType<typeof prisma.script.findMany>>[number]) => (
               <div
                 key={script.id}
-                className="group relative rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm transition-all hover:border-yellow-500 hover:bg-black/70"
+                className="group relative rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm transition-all hover:border-[#FF4F00] hover:bg-black/70"
               >
                 <Link href={`/app/projects/${projectId}/scripts/${script.id}/editor`} className="block">
-                <h3 className="mb-2 text-xl font-bold uppercase tracking-widest text-white group-hover:text-yellow-500">
+                <h3 className="mb-2 text-xl font-bold uppercase tracking-widest text-white group-hover:text-[#FF4F00]">
                   {script.title}
                 </h3>
                 <p className="text-sm text-gray-500">

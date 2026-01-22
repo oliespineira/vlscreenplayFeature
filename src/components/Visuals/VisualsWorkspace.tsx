@@ -155,7 +155,7 @@ export function VisualsWorkspace({
     <div className="space-y-8">
       {/* Project Header */}
       <div className="space-y-4">
-        <h1 className="text-4xl font-black uppercase tracking-widest text-yellow-500 sm:text-5xl">
+        <h1 className="text-4xl font-black uppercase tracking-widest text-[#FF4F00] sm:text-5xl">
           {projectTitle}
         </h1>
 
@@ -197,7 +197,7 @@ export function VisualsWorkspace({
                 disabled={uploadingCover}
                 className="hidden"
               />
-              <span className="inline-block rounded border border-pink-400 px-4 py-2 text-xs font-bold uppercase tracking-widest text-pink-400 transition-all hover:bg-pink-400 hover:text-black disabled:opacity-50">
+              <span className="inline-block rounded border border-[#FF4F00] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#FF4F00] transition-all hover:bg-[#FF4F00] hover:text-black disabled:opacity-50">
                 {uploadingCover ? "Uploading..." : coverImageLink ? "Change Cover" : "Upload Cover"}
               </span>
             </label>
@@ -223,7 +223,7 @@ export function VisualsWorkspace({
                 </div>
                 <button
                   onClick={() => setShowAddModal(scene.id)}
-                  className="rounded border border-pink-400 px-4 py-2 text-xs font-bold uppercase tracking-widest text-pink-400 transition-all hover:bg-pink-400 hover:text-black"
+                  className="rounded border border-[#FF4F00] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#FF4F00] transition-all hover:bg-[#FF4F00] hover:text-black"
                 >
                   Add Visual Element
                 </button>
@@ -261,7 +261,7 @@ export function VisualsWorkspace({
                         </div>
                       )}
                       {visual.tags && (
-                        <div className="absolute top-2 right-2 rounded bg-pink-400/80 px-2 py-1 text-xs font-bold text-black">
+                        <div className="absolute top-2 right-2 rounded bg-[#FF4F00]/80 px-2 py-1 text-xs font-bold text-black">
                           {visual.tags}
                         </div>
                       )}
@@ -280,7 +280,7 @@ export function VisualsWorkspace({
       <div className="flex justify-center border-t border-gray-800 pt-8">
         <button
           onClick={() => router.push(`/app/projects/${projectId}/export`)}
-          className="rounded bg-pink-400 px-8 py-4 text-base font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-pink-300 active:scale-95"
+          className="rounded bg-[#FF4F00] px-8 py-4 text-base font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-[#FF6B2B] active:scale-95"
         >
           Export
         </button>
@@ -303,7 +303,7 @@ export function VisualsWorkspace({
                   value={newVisualUrl}
                   onChange={(e) => setNewVisualUrl(e.target.value)}
                   placeholder="https://example.com/image.jpg"
-                  className="w-full rounded border border-gray-800 bg-black/50 px-4 py-2 text-white placeholder-gray-500 focus:border-pink-400 focus:outline-none"
+                  className="w-full rounded border border-gray-800 bg-black/50 px-4 py-2 text-white placeholder-gray-500 focus:border-[#FF4F00] focus:outline-none"
                 />
               </div>
               <div>
@@ -315,7 +315,7 @@ export function VisualsWorkspace({
                   onChange={(e) => setNewVisualNote(e.target.value)}
                   placeholder="Add a note about this visual..."
                   rows={3}
-                  className="w-full rounded border border-gray-800 bg-black/50 px-4 py-2 text-white placeholder-gray-500 focus:border-pink-400 focus:outline-none"
+                  className="w-full rounded border border-gray-800 bg-black/50 px-4 py-2 text-white placeholder-gray-500 focus:border-[#FF4F00] focus:outline-none"
                 />
               </div>
               <div>
@@ -327,7 +327,7 @@ export function VisualsWorkspace({
                   value={newVisualTags}
                   onChange={(e) => setNewVisualTags(e.target.value)}
                   placeholder="mood, lighting, color"
-                  className="w-full rounded border border-gray-800 bg-black/50 px-4 py-2 text-white placeholder-gray-500 focus:border-pink-400 focus:outline-none"
+                  className="w-full rounded border border-gray-800 bg-black/50 px-4 py-2 text-white placeholder-gray-500 focus:border-[#FF4F00] focus:outline-none"
                 />
               </div>
               <div className="flex gap-4">
@@ -345,7 +345,7 @@ export function VisualsWorkspace({
                 <button
                   onClick={() => handleAddVisual(showAddModal)}
                   disabled={uploadingVisual || !newVisualUrl.trim()}
-                  className="flex-1 rounded bg-pink-400 px-4 py-2 text-sm font-bold uppercase tracking-wider text-black transition-all hover:bg-pink-300 disabled:opacity-50"
+                  className="flex-1 rounded bg-[#FF4F00] px-4 py-2 text-sm font-bold uppercase tracking-wider text-black transition-all hover:bg-[#FF6B2B] disabled:opacity-50"
                 >
                   {uploadingVisual ? "Adding..." : "Add"}
                 </button>

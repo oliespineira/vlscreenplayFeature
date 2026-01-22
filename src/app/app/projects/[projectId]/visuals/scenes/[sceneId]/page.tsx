@@ -27,7 +27,7 @@ export default async function SceneDetailPage({
             <p className="mb-4 text-lg text-gray-400">Scene not found.</p>
             <Link
               href={`/app/projects/${projectId}/visuals`}
-              className="text-sm text-pink-400 hover:underline"
+              className="text-sm text-[#FF4F00] hover:underline"
             >
               Back to Scenes
             </Link>
@@ -42,7 +42,7 @@ export default async function SceneDetailPage({
       <div className="mx-auto max-w-6xl p-8">
         <Link
           href={`/app/projects/${projectId}/visuals`}
-          className="mb-4 inline-block text-sm text-gray-400 hover:text-pink-400"
+          className="mb-4 inline-block text-sm text-gray-400 hover:text-[#FF4F00]"
         >
           ← Back to Scenes
         </Link>

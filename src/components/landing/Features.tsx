@@ -70,7 +70,7 @@ export function Features() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
-          <h2 className="mb-4 text-3xl font-black uppercase tracking-widest text-yellow-500 sm:text-4xl md:text-5xl">
+          <h2 className="mb-4 text-3xl font-black uppercase tracking-widest text-[#FF4F00] sm:text-4xl md:text-5xl">
             Features
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-gray-400">
@@ -82,7 +82,7 @@ export function Features() {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="feature-card rounded-lg border border-gray-800 bg-black/50 p-8 opacity-0 translate-y-10 transition-all duration-700 backdrop-blur-sm hover:border-yellow-500 hover:bg-black/70"
+              className="feature-card rounded-lg border border-gray-800 bg-black/50 p-8 opacity-0 translate-y-10 transition-all duration-700 backdrop-blur-sm hover:border-[#FF4F00] hover:bg-black/70"
             >
               <div className="mb-4 text-4xl">{feature.icon}</div>
               <h3 className="mb-3 text-xl font-bold uppercase tracking-widest text-white">

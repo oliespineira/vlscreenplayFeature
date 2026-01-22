@@ -57,7 +57,7 @@ export function SceneBreakdownCard({
         <div className="space-y-4">
           {breakdown.logline && (
             <div>
-              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-pink-400">
+              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-[#FF4F00]">
                 Logline
               </h4>
               <p className="text-sm text-gray-300">{breakdown.logline}</p>
@@ -66,7 +66,7 @@ export function SceneBreakdownCard({
 
           {breakdown.characters && breakdown.characters.length > 0 && (
             <div>
-              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-pink-400">
+              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-[#FF4F00]">
                 Characters
               </h4>
               <ul className="space-y-1">
@@ -84,7 +84,7 @@ export function SceneBreakdownCard({
 
           {breakdown.props && breakdown.props.length > 0 && (
             <div>
-              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-pink-400">
+              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-[#FF4F00]">
                 Props
               </h4>
               <ul className="space-y-1">
@@ -102,7 +102,7 @@ export function SceneBreakdownCard({
 
           {breakdown.locations && breakdown.locations.length > 0 && (
             <div>
-              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-pink-400">
+              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-[#FF4F00]">
                 Locations
               </h4>
               <ul className="space-y-1">
@@ -120,7 +120,7 @@ export function SceneBreakdownCard({
 
           {breakdown.wardrobe && breakdown.wardrobe.length > 0 && (
             <div>
-              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-pink-400">
+              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-[#FF4F00]">
                 Wardrobe
               </h4>
               <ul className="space-y-1">
@@ -138,7 +138,7 @@ export function SceneBreakdownCard({
 
           {breakdown.notes && (
             <div>
-              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-pink-400">
+              <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-[#FF4F00]">
                 Notes
               </h4>
               <p className="text-sm text-gray-300">{breakdown.notes}</p>

@@ -33,7 +33,7 @@ export function ScriptSelector({
       <select
         value={selectedScriptId || ""}
         onChange={(e) => onSelect(e.target.value)}
-        className="w-full rounded border border-gray-700 bg-black/50 px-4 py-2 text-white focus:border-pink-400 focus:outline-none"
+        className="w-full rounded border border-gray-700 bg-black/50 px-4 py-2 text-white focus:border-[#FF4F00] focus:outline-none"
       >
         {scripts.map((script) => (
           <option key={script.id} value={script.id}>

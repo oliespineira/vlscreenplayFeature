@@ -61,14 +61,14 @@ export function RenameProjectButton({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           disabled={isSaving}
-          className="w-full rounded border border-gray-700 bg-black/60 px-2 py-1 text-xs text-white outline-none focus:border-yellow-500"
+          className="w-full rounded border border-gray-700 bg-black/60 px-2 py-1 text-xs text-white outline-none focus:border-[#FF4F00]"
           autoFocus
         />
         <div className="flex gap-2">
           <button
             type="submit"
             disabled={isSaving}
-            className="rounded bg-yellow-500 px-3 py-1 text-xs font-bold uppercase tracking-widest text-black transition-all hover:bg-yellow-400 disabled:opacity-50"
+            className="rounded bg-[#FF4F00] px-3 py-1 text-xs font-bold uppercase tracking-widest text-black transition-all hover:bg-[#FF6B2B] disabled:opacity-50"
           >
             {isSaving ? "Saving..." : "Save"}
           </button>

@@ -79,7 +79,7 @@ export default async function VisualsPage({
           <div className="mb-4 flex items-center gap-4">
             <Link
               href={`/app/projects/${projectId}/visuals`}
-              className="text-sm text-gray-400 hover:text-pink-400"
+              className="text-sm text-gray-400 hover:text-[#FF4F00]"
             >
               ← Back to Scenes Dashboard
             </Link>
@@ -108,7 +108,7 @@ export default async function VisualsPage({
           </div>
           <Link
             href={`/app/projects/${projectId}/visuals?view=breakdown`}
-            className="text-xs px-3 py-1 rounded border border-pink-400 text-pink-400 hover:bg-pink-400 hover:text-black transition-all"
+            className="text-xs px-3 py-1 rounded border border-[#FF4F00] text-[#FF4F00] hover:bg-[#FF4F00] hover:text-black transition-all"
           >
             Scene Breakdown
           </Link>

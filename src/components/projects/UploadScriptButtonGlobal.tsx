@@ -133,7 +133,7 @@ export function UploadScriptButtonGlobal() {
           disabled={isUploading}
           className="hidden"
         />
-        <span className="inline-block rounded border-2 border-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-yellow-500 transition-all hover:bg-yellow-500 hover:text-black active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+        <span className="inline-block rounded border-2 border-[#FF4F00] px-6 py-3 text-sm font-bold uppercase tracking-widest text-[#FF4F00] transition-all hover:bg-[#FF4F00] hover:text-black active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
           {isUploading ? "Uploading..." : "Upload Script"}
         </span>
       </label>

@@ -16,11 +16,11 @@ export default async function ProjectAnalysisPage({
         <div className="mb-8">
           <Link
             href={`/app/projects/${projectId}`}
-            className="mb-4 inline-block text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-yellow-500"
+            className="mb-4 inline-block text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-[#FF4F00]"
           >
             ← Back to Project
           </Link>
-          <h1 className="text-3xl font-black uppercase tracking-widest text-yellow-500 sm:text-4xl">
+          <h1 className="text-3xl font-black uppercase tracking-widest text-[#FF4F00] sm:text-4xl">
             Script Analysis
           </h1>
           <p className="mt-2 text-sm text-gray-400">

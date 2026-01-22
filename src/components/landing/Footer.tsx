@@ -36,7 +36,7 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {footerColumns.map((column, index) => (
             <div key={index} className="text-center md:text-left">
-              <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-yellow-500">
+              <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-[#FF4F00]">
                 {column.title}
               </h3>
               <ul className="space-y-2">
@@ -44,7 +44,7 @@ export function Footer() {
                   <li key={linkIndex}>
                     <Link
                       href={link.href}
-                      className="text-sm text-gray-400 transition-all hover:translate-x-1 hover:text-yellow-500"
+                      className="text-sm text-gray-400 transition-all hover:translate-x-1 hover:text-[#FF4F00]"
                     >
                       {link.label}
                     </Link>

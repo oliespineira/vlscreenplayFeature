@@ -807,7 +807,7 @@ export function EditorClient({
           type="text"
           value={title}
           onChange={(e) => handleTitleChange(e.target.value)}
-          className="bg-transparent text-2xl font-black uppercase tracking-widest text-yellow-500 outline-none placeholder:text-gray-600"
+          className="bg-transparent text-2xl font-black uppercase tracking-widest text-[#FF4F00] outline-none placeholder:text-gray-600"
           placeholder="SCRIPT TITLE"
         />
         <div className="flex items-center gap-4">
@@ -843,7 +843,7 @@ export function EditorClient({
                   editorInstance.setPosition({ lineNumber: targetLine, column: 1 });
                   editorInstance.focus();
                 }}
-                className="rounded border border-gray-800 bg-black/50 px-2 py-1 text-xs font-medium uppercase tracking-widest text-gray-400 outline-none focus:border-yellow-500 focus:text-yellow-500"
+                className="rounded border border-gray-800 bg-black/50 px-2 py-1 text-xs font-medium uppercase tracking-widest text-gray-400 outline-none focus:border-[#FF4F00] focus:text-[#FF4F00]"
               >
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                   <option key={page} value={page}>
@@ -855,7 +855,7 @@ export function EditorClient({
           </div>
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="rounded border border-yellow-500 px-3 py-1 text-xs font-bold uppercase tracking-widest text-yellow-500 transition-all hover:bg-yellow-500 hover:text-black"
+            className="rounded border border-[#FF4F00] px-3 py-1 text-xs font-bold uppercase tracking-widest text-[#FF4F00] transition-all hover:bg-[#FF4F00] hover:text-black"
             title={isExpanded ? "Show sidebars" : "Expand editor"}
           >
             {isExpanded ? "←" : "→"}
@@ -865,7 +865,7 @@ export function EditorClient({
               type="checkbox"
               checked={autoFormat}
               onChange={(e) => setAutoFormat(e.target.checked)}
-              className="rounded border-gray-800 bg-black/50 accent-yellow-500"
+              className="rounded border-gray-800 bg-black/50 accent-[#FF4F00]"
             />
             <span>Auto-format</span>
           </label>
@@ -933,8 +933,8 @@ export function EditorClient({
         {/* Resize handle */}
         {!isMobile && !isExpanded && (
           <div
-            className={`relative w-[6px] cursor-col-resize bg-black transition-colors hover:bg-yellow-500/50 ${
-              isResizing ? "bg-yellow-500" : ""
+            className={`relative w-[6px] cursor-col-resize bg-black transition-colors hover:bg-[#FF4F00]/50 ${
+              isResizing ? "bg-[#FF4F00]" : ""
             }`}
             onMouseDown={handleResizeStart}
           />
@@ -942,7 +942,7 @@ export function EditorClient({
         {!isMobile && !isExpanded && (
         <div className="flex h-full w-[380px] flex-col border-l border-gray-800 bg-black/50 backdrop-blur-sm">
           <div className="border-b border-gray-800 p-4">
-            <h2 className="text-lg font-black uppercase tracking-widest text-yellow-500">
+            <h2 className="text-lg font-black uppercase tracking-widest text-[#FF4F00]">
               Writing Coach
             </h2>
             <div className="mt-2 flex items-center gap-2">
@@ -950,8 +950,8 @@ export function EditorClient({
                 onClick={() => setAgentStyle("director")}
                 className={`rounded px-2 py-1 text-xs font-bold uppercase tracking-widest transition-all ${
                   agentStyle === "director"
-                    ? "bg-yellow-500 text-black"
-                    : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-yellow-500"
+                    ? "bg-[#FF4F00] text-black"
+                    : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-[#FF4F00]"
                 }`}
               >
                 Director Mode
@@ -960,8 +960,8 @@ export function EditorClient({
                 onClick={() => setAgentStyle("socratic")}
                 className={`rounded px-2 py-1 text-xs font-bold uppercase tracking-widest transition-all ${
                   agentStyle === "socratic"
-                    ? "bg-yellow-500 text-black"
-                    : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-yellow-500"
+                    ? "bg-[#FF4F00] text-black"
+                    : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-[#FF4F00]"
                 }`}
               >
                 Strict Socratic
@@ -993,14 +993,14 @@ export function EditorClient({
               <button
                 onClick={() => askAgent("selection")}
                 disabled={!selectedText || isLoading}
-                className="flex-1 rounded bg-yellow-500 px-3 py-2 text-xs font-bold uppercase tracking-widest text-black transition-all disabled:bg-gray-800 disabled:text-gray-600 disabled:opacity-50 hover:scale-105 hover:bg-yellow-400 active:scale-95"
+                className="flex-1 rounded bg-[#FF4F00] px-3 py-2 text-xs font-bold uppercase tracking-widest text-black transition-all disabled:bg-gray-800 disabled:text-gray-600 disabled:opacity-50 hover:scale-105 hover:bg-[#FF6B2B] active:scale-95"
               >
                 Discuss selection
               </button>
               <button
                 onClick={() => askAgent("scene")}
                 disabled={isLoading}
-                className="flex-1 rounded bg-yellow-500 px-3 py-2 text-xs font-bold uppercase tracking-widest text-black transition-all disabled:bg-gray-800 disabled:text-gray-600 disabled:opacity-50 hover:scale-105 hover:bg-yellow-400 active:scale-95"
+                className="flex-1 rounded bg-[#FF4F00] px-3 py-2 text-xs font-bold uppercase tracking-widest text-black transition-all disabled:bg-gray-800 disabled:text-gray-600 disabled:opacity-50 hover:scale-105 hover:bg-[#FF6B2B] active:scale-95"
               >
                 Discuss scene
               </button>
@@ -1008,7 +1008,7 @@ export function EditorClient({
             <button
               onClick={handlePersonalize}
               disabled={isLoading}
-              className="rounded border-2 border-yellow-500 px-3 py-2 text-xs font-bold uppercase tracking-widest text-yellow-500 transition-all disabled:border-gray-800 disabled:text-gray-600 disabled:opacity-50 hover:bg-yellow-500 hover:text-black active:scale-95"
+              className="rounded border-2 border-[#FF4F00] px-3 py-2 text-xs font-bold uppercase tracking-widest text-[#FF4F00] transition-all disabled:border-gray-800 disabled:text-gray-600 disabled:opacity-50 hover:bg-[#FF4F00] hover:text-black active:scale-95"
             >
               Personalize
             </button>
@@ -1024,12 +1024,12 @@ export function EditorClient({
                   }
                 }}
                 placeholder="Type your answer or question..."
-                className="flex-1 rounded border border-gray-800 bg-black/50 px-3 py-2 text-sm text-white placeholder:text-gray-500 outline-none focus:border-yellow-500"
+                className="flex-1 rounded border border-gray-800 bg-black/50 px-3 py-2 text-sm text-white placeholder:text-gray-500 outline-none focus:border-[#FF4F00]"
               />
               <button
                 onClick={handleSend}
                 disabled={!userMessage.trim() || isLoading}
-                className="rounded bg-yellow-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-black transition-all disabled:bg-gray-800 disabled:text-gray-600 disabled:opacity-50 hover:scale-105 hover:bg-yellow-400 active:scale-95"
+                className="rounded bg-[#FF4F00] px-4 py-2 text-xs font-bold uppercase tracking-widest text-black transition-all disabled:bg-gray-800 disabled:text-gray-600 disabled:opacity-50 hover:scale-105 hover:bg-[#FF6B2B] active:scale-95"
               >
                 Send
               </button>
@@ -1047,11 +1047,11 @@ export function EditorClient({
                     key={idx}
                     className={`rounded border p-3 ${
                       msg.role === "user"
-                        ? "border-yellow-500/30 bg-yellow-500/10 text-white"
+                        ? "border-[#FF4F00]/30 bg-[#FF4F00]/10 text-white"
                         : "border-gray-800 bg-black/50 text-gray-200"
                     }`}
                   >
-                    <div className="mb-1 text-xs font-bold uppercase tracking-widest text-yellow-500">
+                    <div className="mb-1 text-xs font-bold uppercase tracking-widest text-[#FF4F00]">
                       {msg.role === "user" ? "You" : "Agent"}
                     </div>
                     <div className="whitespace-pre-wrap text-sm">{msg.content}</div>

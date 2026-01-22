@@ -60,7 +60,7 @@ export function UploadButton({
         disabled={isUploading}
         className="hidden"
       />
-      <span className="inline-block rounded border border-pink-400 px-4 py-2 text-xs font-bold uppercase tracking-widest text-pink-400 transition-all hover:bg-pink-400 hover:text-black disabled:opacity-50">
+      <span className="inline-block rounded border border-[#FF4F00] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#FF4F00] transition-all hover:bg-[#FF4F00] hover:text-black disabled:opacity-50">
         {isUploading ? "Uploading..." : label}
       </span>
     </label>

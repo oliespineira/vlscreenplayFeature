@@ -85,7 +85,7 @@ export function TopNav() {
             <div className="flex items-center gap-4">
               <Link
                 href="/app"
-                className="text-xl font-black uppercase tracking-widest text-yellow-500 transition-opacity hover:opacity-70"
+                className="text-xl font-black uppercase tracking-widest text-[#FF4F00] transition-opacity hover:opacity-70"
               >
                 DION
               </Link>
@@ -109,7 +109,7 @@ export function TopNav() {
           <div className="flex items-center gap-4">
             <Link
               href="/app"
-              className="text-xl font-black uppercase tracking-widest text-yellow-500 transition-opacity hover:opacity-70"
+              className="text-xl font-black uppercase tracking-widest text-[#FF4F00] transition-opacity hover:opacity-70"
             >
               DION
             </Link>
@@ -130,13 +130,13 @@ export function TopNav() {
               aria-pressed={activePanel === "writing"}
               className={`relative px-4 py-2 text-sm font-medium uppercase tracking-widest transition-colors ${
                 activePanel === "writing"
-                  ? "text-pink-400"
-                  : "text-gray-400 hover:text-pink-400"
+                  ? "text-[#FF4F00]"
+                  : "text-gray-400 hover:text-[#FF4F00]"
               }`}
             >
               Writing
               {activePanel === "writing" && (
-                <span className="absolute bottom-0 left-0 h-0.5 w-full bg-pink-400" />
+                <span className="absolute bottom-0 left-0 h-0.5 w-full bg-[#FF4F00]" />
               )}
             </button>
             <button
@@ -144,13 +144,13 @@ export function TopNav() {
               aria-pressed={activePanel === "visualise"}
               className={`relative px-4 py-2 text-sm font-medium uppercase tracking-widest transition-colors ${
                 activePanel === "visualise"
-                  ? "text-pink-400"
-                  : "text-gray-400 hover:text-pink-400"
+                  ? "text-[#FF4F00]"
+                  : "text-gray-400 hover:text-[#FF4F00]"
               }`}
             >
               Visualising
               {activePanel === "visualise" && (
-                <span className="absolute bottom-0 left-0 h-0.5 w-full bg-pink-400" />
+                <span className="absolute bottom-0 left-0 h-0.5 w-full bg-[#FF4F00]" />
               )}
             </button>
             <button
@@ -158,13 +158,13 @@ export function TopNav() {
               aria-pressed={activePanel === "export"}
               className={`relative px-4 py-2 text-sm font-medium uppercase tracking-widest transition-colors ${
                 activePanel === "export"
-                  ? "text-pink-400"
-                  : "text-gray-400 hover:text-pink-400"
+                  ? "text-[#FF4F00]"
+                  : "text-gray-400 hover:text-[#FF4F00]"
               }`}
             >
               Exporting
               {activePanel === "export" && (
-                <span className="absolute bottom-0 left-0 h-0.5 w-full bg-pink-400" />
+                <span className="absolute bottom-0 left-0 h-0.5 w-full bg-[#FF4F00]" />
               )}
             </button>
           </nav>

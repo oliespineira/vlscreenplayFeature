@@ -59,7 +59,7 @@ export function HowItWorks() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
-          <h2 className="mb-4 text-3xl font-black uppercase tracking-widest text-yellow-500 sm:text-4xl md:text-5xl">
+          <h2 className="mb-4 text-3xl font-black uppercase tracking-widest text-[#FF4F00] sm:text-4xl md:text-5xl">
             How It Works
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-gray-400">
@@ -74,7 +74,7 @@ export function HowItWorks() {
               className="step-item flex flex-col items-start gap-6 opacity-0 -translate-x-10 transition-all duration-700 md:flex-row md:items-center lg:gap-12"
             >
               <div className="flex-shrink-0">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-yellow-500 bg-black text-2xl font-black text-yellow-500">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#FF4F00] bg-black text-2xl font-black text-[#FF4F00]">
                   {step.number}
                 </div>
               </div>

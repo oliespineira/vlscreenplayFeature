@@ -124,7 +124,7 @@ export function ExportPanel({ projectId, scripts }: ExportPanelProps) {
         <select
           value={selectedScriptId || ""}
           onChange={(e) => setSelectedScriptId(e.target.value)}
-          className="w-full rounded border border-gray-800 bg-black/50 px-4 py-3 text-white focus:border-pink-400 focus:outline-none"
+          className="w-full rounded border border-gray-800 bg-black/50 px-4 py-3 text-white focus:border-[#FF4F00] focus:outline-none"
         >
           {scripts.map((script) => (
             <option key={script.id} value={script.id}>
@@ -142,7 +142,7 @@ export function ExportPanel({ projectId, scripts }: ExportPanelProps) {
         <button
           onClick={() => handleExport("dossier")}
           disabled={!!exporting}
-          className="group relative flex flex-col items-center justify-center rounded-lg border-2 border-pink-400 bg-black/50 p-8 backdrop-blur-sm transition-all hover:border-pink-300 hover:bg-black/70 disabled:opacity-50"
+          className="group relative flex flex-col items-center justify-center rounded-lg border-2 border-[#FF4F00] bg-black/50 p-8 backdrop-blur-sm transition-all hover:border-[#FF6B2B] hover:bg-black/70 disabled:opacity-50"
         >
           <div className="mb-4 text-4xl">📄</div>
           <h3 className="mb-2 text-xl font-bold uppercase tracking-wider text-white">
@@ -153,7 +153,7 @@ export function ExportPanel({ projectId, scripts }: ExportPanelProps) {
           </p>
           {exporting === "dossier" && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/80">
-              <div className="text-pink-400">Exporting...</div>
+              <div className="text-[#FF4F00]">Exporting...</div>
             </div>
           )}
         </button>
@@ -162,7 +162,7 @@ export function ExportPanel({ projectId, scripts }: ExportPanelProps) {
         <button
           onClick={() => handleExport("script")}
           disabled={!!exporting}
-          className="group relative flex flex-col items-center justify-center rounded-lg border-2 border-pink-400 bg-black/50 p-8 backdrop-blur-sm transition-all hover:border-pink-300 hover:bg-black/70 disabled:opacity-50"
+          className="group relative flex flex-col items-center justify-center rounded-lg border-2 border-[#FF4F00] bg-black/50 p-8 backdrop-blur-sm transition-all hover:border-[#FF6B2B] hover:bg-black/70 disabled:opacity-50"
         >
           <div className="mb-4 text-4xl">📝</div>
           <h3 className="mb-2 text-xl font-bold uppercase tracking-wider text-white">
@@ -173,7 +173,7 @@ export function ExportPanel({ projectId, scripts }: ExportPanelProps) {
           </p>
           {exporting === "script" && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/80">
-              <div className="text-pink-400">Exporting...</div>
+              <div className="text-[#FF4F00]">Exporting...</div>
             </div>
           )}
         </button>
@@ -182,7 +182,7 @@ export function ExportPanel({ projectId, scripts }: ExportPanelProps) {
         <button
           onClick={() => handleExport("storyboard")}
           disabled={!!exporting}
-          className="group relative flex flex-col items-center justify-center rounded-lg border-2 border-pink-400 bg-black/50 p-8 backdrop-blur-sm transition-all hover:border-pink-300 hover:bg-black/70 disabled:opacity-50"
+          className="group relative flex flex-col items-center justify-center rounded-lg border-2 border-[#FF4F00] bg-black/50 p-8 backdrop-blur-sm transition-all hover:border-[#FF6B2B] hover:bg-black/70 disabled:opacity-50"
         >
           <div className="mb-4 text-4xl">🎬</div>
           <h3 className="mb-2 text-xl font-bold uppercase tracking-wider text-white">
@@ -193,7 +193,7 @@ export function ExportPanel({ projectId, scripts }: ExportPanelProps) {
           </p>
           {exporting === "storyboard" && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/80">
-              <div className="text-pink-400">Exporting...</div>
+              <div className="text-[#FF4F00]">Exporting...</div>
             </div>
           )}
         </button>

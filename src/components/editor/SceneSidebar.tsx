@@ -14,7 +14,7 @@ export function SceneSidebar({
   return (
     <div className="flex h-full w-[280px] flex-col border-r border-gray-800 bg-black/50 backdrop-blur-sm">
       <div className="border-b border-gray-800 p-4">
-        <h2 className="text-lg font-black uppercase tracking-widest text-yellow-500">
+        <h2 className="text-lg font-black uppercase tracking-widest text-[#FF4F00]">
           Scenes
         </h2>
       </div>
@@ -33,8 +33,8 @@ export function SceneSidebar({
                   onClick={() => onSelectScene(scene)}
                   className={`mb-1 w-full rounded border px-3 py-2 text-left text-sm transition-all ${
                     isActive
-                      ? "border-yellow-500 bg-yellow-500/20 text-yellow-500"
-                      : "border-gray-800 bg-black/50 text-gray-400 hover:border-yellow-500/50 hover:text-yellow-500"
+                      ? "border-[#FF4F00] bg-[#FF4F00]/20 text-[#FF4F00]"
+                      : "border-gray-800 bg-black/50 text-gray-400 hover:border-[#FF4F00]/50 hover:text-[#FF4F00]"
                   }`}
                 >
                   <div className="font-bold uppercase tracking-wider">

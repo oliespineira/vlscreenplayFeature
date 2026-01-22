@@ -75,7 +75,7 @@ export function Testimonials() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center">
-          <h2 className="mb-4 text-3xl font-black uppercase tracking-widest text-yellow-500 sm:text-4xl md:text-5xl">
+          <h2 className="mb-4 text-3xl font-black uppercase tracking-widest text-[#FF4F00] sm:text-4xl md:text-5xl">
             Testimonials
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-gray-400">
@@ -100,7 +100,7 @@ export function Testimonials() {
                 >
                   <div className="mb-4 flex justify-center">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <span key={i} className="text-yellow-500">
+                      <span key={i} className="text-[#FF4F00]">
                         ★
                       </span>
                     ))}
@@ -127,7 +127,7 @@ export function Testimonials() {
                 onClick={() => setCurrentIndex(index)}
                 className={`h-2 rounded-full transition-all ${
                   index === currentIndex
-                    ? "w-8 bg-yellow-500"
+                    ? "w-8 bg-[#FF4F00]"
                     : "w-2 bg-gray-700 hover:bg-gray-600"
                 }`}
                 aria-label={`Go to testimonial ${index + 1}`}

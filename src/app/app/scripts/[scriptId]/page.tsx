@@ -19,11 +19,11 @@ export default async function ScriptScenesPage({
         <div className="mb-8">
           <Link
             href="/app/projects"
-            className="mb-4 inline-block text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-yellow-500"
+            className="mb-4 inline-block text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-[#FF4F00]"
           >
             ← Back to Scripts
           </Link>
-          <h1 className="text-3xl font-black uppercase tracking-widest text-yellow-500 sm:text-4xl">
+          <h1 className="text-3xl font-black uppercase tracking-widest text-[#FF4F00] sm:text-4xl">
             {script.title}
           </h1>
         </div>
@@ -33,7 +33,7 @@ export default async function ScriptScenesPage({
             <p className="mb-4 text-lg text-gray-400">No scenes yet.</p>
             <Link
               href={`/app/scripts/${scriptId}/editor`}
-              className="inline-block rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
+              className="inline-block rounded bg-[#FF4F00] px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-[#FF6B2B] active:scale-95"
             >
               Start Writing
             </Link>
@@ -53,13 +53,13 @@ export default async function ScriptScenesPage({
                 <Link
                   key={scene.index}
                   href={`/app/scripts/${scriptId}/editor?scene=${scene.startLine}`}
-                  className="group rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm transition-all hover:border-yellow-500 hover:bg-black/70"
+                  className="group rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm transition-all hover:border-[#FF4F00] hover:bg-black/70"
                 >
                   <div className="mb-2 flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-yellow-500 bg-black text-sm font-black text-yellow-500">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#FF4F00] bg-black text-sm font-black text-[#FF4F00]">
                       {scene.index}
                     </span>
-                    <h3 className="text-lg font-bold uppercase tracking-widest text-white group-hover:text-yellow-500">
+                    <h3 className="text-lg font-bold uppercase tracking-widest text-white group-hover:text-[#FF4F00]">
                       {scene.slugline}
                     </h3>
                   </div>
@@ -72,7 +72,7 @@ export default async function ScriptScenesPage({
             <div className="mt-8">
               <Link
                 href={`/app/scripts/${scriptId}/editor`}
-                className="inline-block rounded border-2 border-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-yellow-500 transition-all hover:bg-yellow-500 hover:text-black active:scale-95"
+                className="inline-block rounded border-2 border-[#FF4F00] px-6 py-3 text-sm font-bold uppercase tracking-widest text-[#FF4F00] transition-all hover:bg-[#FF4F00] hover:text-black active:scale-95"
               >
                 Open Editor
               </Link>

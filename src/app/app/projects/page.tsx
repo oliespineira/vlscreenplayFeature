@@ -35,14 +35,14 @@ export default async function ProjectsPage() {
     <div className="min-h-screen">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-3xl font-black uppercase tracking-widest text-yellow-500 sm:text-4xl">
+          <h1 className="text-3xl font-black uppercase tracking-widest text-[#FF4F00] sm:text-4xl">
             Projects
           </h1>
           <div className="flex items-center gap-4">
             <form action={createProject}>
               <button
                 type="submit"
-                className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
+                className="rounded bg-[#FF4F00] px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-[#FF6B2B] active:scale-95"
               >
                 New Project
               </button>
@@ -57,7 +57,7 @@ export default async function ProjectsPage() {
               <form action={createProject} className="inline-block">
                 <button
                   type="submit"
-                  className="rounded bg-yellow-500 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95"
+                  className="rounded bg-[#FF4F00] px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-[#FF6B2B] active:scale-95"
                 >
                   Create Your First Project
                 </button>
@@ -69,10 +69,10 @@ export default async function ProjectsPage() {
             {projects.map((project) => (
               <div
                 key={project.id}
-                className="group relative rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm transition-all hover:border-yellow-500 hover:bg-black/70"
+                className="group relative rounded-lg border border-gray-800 bg-black/50 p-6 backdrop-blur-sm transition-all hover:border-[#FF4F00] hover:bg-black/70"
               >
                 <Link href={`/app/projects/${project.id}`} className="block">
-                  <h2 className="mb-2 text-xl font-bold uppercase tracking-widest text-white group-hover:text-yellow-500">
+                  <h2 className="mb-2 text-xl font-bold uppercase tracking-widest text-white group-hover:text-[#FF4F00]">
                     {project.title}
                   </h2>
                   <p className="text-sm text-gray-500">

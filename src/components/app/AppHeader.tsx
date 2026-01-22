@@ -19,7 +19,7 @@ export function AppHeader() {
           {/* Logo */}
           <Link
             href="/app"
-            className="text-xl font-black uppercase tracking-widest text-yellow-500 transition-opacity hover:opacity-70"
+            className="text-xl font-black uppercase tracking-widest text-[#FF4F00] transition-opacity hover:opacity-70"
           >
             DION
           </Link>
@@ -34,13 +34,13 @@ export function AppHeader() {
                   href={link.href}
                   className={`relative text-sm font-medium uppercase tracking-widest transition-colors ${
                     isActive
-                      ? "text-yellow-500"
-                      : "text-white hover:text-yellow-500"
+                      ? "text-[#FF4F00]"
+                      : "text-white hover:text-[#FF4F00]"
                   }`}
                 >
                   {link.label}
                   {isActive && (
-                    <span className="absolute bottom-0 left-0 h-0.5 w-full bg-yellow-500" />
+                    <span className="absolute bottom-0 left-0 h-0.5 w-full bg-[#FF4F00]" />
                   )}
                 </Link>
               );

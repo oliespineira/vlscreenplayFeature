@@ -34,14 +34,14 @@ export function Hero() {
       {/* Parallax Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-gray-900" />
       <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-yellow-500 blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-yellow-500 blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-[#FF4F00] blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-[#FF4F00] blur-3xl" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
         <div className="animate-fade-in-up">
-          <h1 className="mb-6 text-4xl font-black uppercase tracking-widest text-yellow-500 sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="mb-6 text-4xl font-black uppercase tracking-widest text-[#FF4F00] sm:text-5xl md:text-6xl lg:text-7xl">
             Write Your
             <br />
             <span className="text-white">Screenplay</span>
@@ -53,13 +53,13 @@ export function Hero() {
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/sign-up"
-              className="rounded bg-yellow-500 px-8 py-4 text-base font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-yellow-400 active:scale-95 sm:text-lg"
+              className="rounded bg-[#FF4F00] px-8 py-4 text-base font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-[#FF6B2B] active:scale-95 sm:text-lg"
             >
               Start Writing
             </Link>
             <Link
               href="#features"
-              className="rounded border-2 border-yellow-500 px-8 py-4 text-base font-bold uppercase tracking-widest text-yellow-500 transition-all hover:bg-yellow-500 hover:text-black active:scale-95 sm:text-lg"
+              className="rounded border-2 border-[#FF4F00] px-8 py-4 text-base font-bold uppercase tracking-widest text-[#FF4F00] transition-all hover:bg-[#FF4F00] hover:text-black active:scale-95 sm:text-lg"
             >
               Learn More
             </Link>
@@ -70,7 +70,7 @@ export function Hero() {
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
         <svg
-          className="h-8 w-8 text-yellow-500"
+          className="h-8 w-8 text-[#FF4F00]"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"

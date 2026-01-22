@@ -37,7 +37,7 @@ export function Header({ isScrolled }: HeaderProps) {
           {/* Logo */}
           <Link
             href="/"
-            className="text-2xl font-black uppercase tracking-widest text-yellow-500 transition-opacity hover:opacity-70"
+            className="text-2xl font-black uppercase tracking-widest text-[#FF4F00] transition-opacity hover:opacity-70"
           >
             DION
           </Link>
@@ -48,10 +48,10 @@ export function Header({ isScrolled }: HeaderProps) {
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative text-sm font-medium uppercase tracking-widest text-white transition-colors hover:text-yellow-500"
+                className="relative text-sm font-medium uppercase tracking-widest text-white transition-colors hover:text-[#FF4F00]"
               >
                 {link.label}
-                <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-yellow-500 transition-all duration-300 hover:w-full" />
+                <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#FF4F00] transition-all duration-300 hover:w-full" />
               </Link>
             ))}
           </div>
@@ -61,7 +61,7 @@ export function Header({ isScrolled }: HeaderProps) {
             {/* Language Toggle */}
             <button
               onClick={toggleLanguage}
-              className="rounded border border-gray-800 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-white transition-all hover:border-yellow-500 hover:text-yellow-500"
+              className="rounded border border-gray-800 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-white transition-all hover:border-[#FF4F00] hover:text-[#FF4F00]"
             >
               {language}
             </button>
@@ -70,14 +70,14 @@ export function Header({ isScrolled }: HeaderProps) {
             {isSignedIn ? (
               <Link
                 href="/app"
-                className="rounded bg-yellow-500 px-6 py-2 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 active:scale-95"
+                className="rounded bg-[#FF4F00] px-6 py-2 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 active:scale-95"
               >
                 {language === "EN" ? "Go to App" : "Ir a la App"}
               </Link>
             ) : (
               <Link
                 href="/sign-in"
-                className="rounded bg-yellow-500 px-6 py-2 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 active:scale-95"
+                className="rounded bg-[#FF4F00] px-6 py-2 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 active:scale-95"
               >
                 {language === "EN" ? "Get Started" : "Comenzar"}
               </Link>
@@ -117,7 +117,7 @@ export function Header({ isScrolled }: HeaderProps) {
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-sm font-medium uppercase tracking-widest text-white transition-colors hover:text-yellow-500"
+                  className="text-sm font-medium uppercase tracking-widest text-white transition-colors hover:text-[#FF4F00]"
                 >
                   {link.label}
                 </Link>

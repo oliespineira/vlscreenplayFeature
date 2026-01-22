@@ -16,13 +16,13 @@ export default async function EditorPage({
         <div className="mb-4 flex items-center gap-4 px-4 sm:px-6 lg:px-8">
           <Link
             href={`/app/projects/${projectId}`}
-            className="text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-yellow-500"
+            className="text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-[#FF4F00]"
           >
             ← Back to Project
           </Link>
           <Link
             href={`/app/projects/${projectId}/visuals?scriptId=${scriptId}`}
-            className="rounded border border-pink-400 px-4 py-2 text-xs font-bold uppercase tracking-widest text-pink-400 transition-all hover:bg-pink-400 hover:text-black"
+            className="rounded border border-[#FF4F00] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#FF4F00] transition-all hover:bg-[#FF4F00] hover:text-black"
           >
             Go to Visualising
           </Link>

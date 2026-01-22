@@ -49,7 +49,7 @@ export function GenerateBreakdownButton({
     <button
       onClick={handleClick}
       disabled={isLoading}
-      className="rounded bg-pink-400 px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-pink-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+      className="rounded bg-[#FF4F00] px-6 py-3 text-sm font-bold uppercase tracking-widest text-black transition-all hover:scale-105 hover:bg-[#FF6B2B] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {isLoading ? "Generating..." : "Generate Breakdown"}
     </button>

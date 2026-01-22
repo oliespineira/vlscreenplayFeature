@@ -20,7 +20,7 @@ export default async function ScriptEditorPage({
       <div className="mx-auto max-w-full">
         <Link
           href={`/app/scripts/${scriptId}`}
-          className="mb-4 inline-block px-4 text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-yellow-500 sm:px-6 lg:px-8"
+          className="mb-4 inline-block px-4 text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-[#FF4F00] sm:px-6 lg:px-8"
         >
           ← Back to Scenes
         </Link>
