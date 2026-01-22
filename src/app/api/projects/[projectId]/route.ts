@@ -27,6 +27,8 @@ export async function GET(_request: Request, { params }: RouteParams) {
         description: true,
         scriptText: true,
         scriptAnalysis: true,
+        headerImageUrl: true,
+        creative: true,
         updatedAt: true,
       },
     });
@@ -58,6 +60,10 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       typeof body.description === "string" ? body.description : undefined;
     const scriptTextRaw =
       typeof body.scriptText === "string" ? body.scriptText : undefined;
+    const headerImageUrlRaw =
+      typeof body.headerImageUrl === "string" ? body.headerImageUrl : undefined;
+    const creativeRaw =
+      typeof body.creative === "string" ? body.creative : undefined;
 
     const hasScriptAnalysis = Object.prototype.hasOwnProperty.call(
       body,
@@ -69,6 +75,8 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       titleRaw === undefined &&
       descriptionRaw === undefined &&
       scriptTextRaw === undefined &&
+      headerImageUrlRaw === undefined &&
+      creativeRaw === undefined &&
       !hasScriptAnalysis
     ) {
       return NextResponse.json(
@@ -118,6 +126,21 @@ export async function PATCH(request: Request, { params }: RouteParams) {
         );
       }
       data.scriptText = scriptText;
+    }
+
+    if (headerImageUrlRaw !== undefined) {
+      data.headerImageUrl = headerImageUrlRaw || null;
+    }
+
+    if (creativeRaw !== undefined) {
+      const creative = creativeRaw.trim();
+      if (creative.length > 200) {
+        return NextResponse.json(
+          { error: "Creative name is too long" },
+          { status: 400 },
+        );
+      }
+      data.creative = creative || null;
     }
 
     if (hasScriptAnalysis) {

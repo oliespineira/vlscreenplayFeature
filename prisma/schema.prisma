@@ -25,6 +25,9 @@ model Project {
   description String @db.Text @default("")
   scriptText  String @db.Text @default("")
   scriptAnalysis Json?
+  coverImageLink String?
+  headerImageUrl String?  // For hero section (image or video URL)
+  creative String?        // Creator name
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -34,6 +37,10 @@ model Project {
   inspirationBoards   InspirationBoard[]
   visualBibles        VisualBible[]
   storyboardPromptSets StoryboardPromptSet[]
+  visualElements      VisualElement[]
+  visualisationRuns   VisualisationRun[]
+  sceneBreakdowns     SceneBreakdown[]
+  scenes    Scene[]
 }
 
 model Script {
@@ -187,4 +194,94 @@ model StoryboardPromptSet {
   @@unique([visualBibleId, sceneId])
   @@index([projectId])
   @@index([sceneId])
+}
+
+model VisualElement {
+  id        String   @id @default(uuid())
+  projectId String
+  sceneId   String
+  userId    String
+  url       String
+  note      String?  @db.Text
+  tags      String?
+  createdAt DateTime @default(now())
+
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([sceneId])
+}
+
+model VisualisationRun {
+  id        String   @id @default(uuid())
+  projectId String
+  scriptId  String
+  status    String   @default("idle") // "idle" | "running" | "done" | "error"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, scriptId])
+  @@index([projectId])
+  @@index([scriptId])
+}
+
+model SceneBreakdown {
+  id         String   @id @default(uuid())
+  projectId  String
+  scriptId   String
+  sceneIndex Int
+  slugline   String
+  sceneText  String?  @db.Text
+  logline    String?  @db.Text
+  props      Json?
+  characters Json?
+  locations  Json?
+  wardrobe   Json?
+  notes      String?  @db.Text
+  updatedAt  DateTime @updatedAt
+
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, scriptId, sceneIndex])
+  @@index([projectId])
+  @@index([scriptId])
+  @@index([projectId, scriptId])
+}
+
+model Scene {
+  id            String   @id @default(uuid())
+  projectId     String
+  title         String
+  description   String   @db.Text @default("")
+  tone          String   @default("")
+  tags          String[] @default([])
+  status        String   @default("in_progress") // "in_progress" | "final" | "archived"
+  sequenceIndex Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  project       Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  images        SceneImage[]
+
+  @@index([projectId])
+  @@index([projectId, sequenceIndex])
+}
+
+model SceneImage {
+  id          String   @id @default(uuid())
+  sceneId     String
+  url         String
+  thumbUrl    String   @default("")
+  source      String   @default("upload") // "upload" | "api" | "ai_suggested"
+  attribution String   @default("")
+  position    Int      @default(0)
+  pinned      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  scene       Scene    @relation(fields: [sceneId], references: [id], onDelete: Cascade)
+
+  @@index([sceneId])
+  @@index([sceneId, position])
 }
