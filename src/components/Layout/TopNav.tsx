@@ -36,9 +36,9 @@ export function TopNav() {
 
   // Determine active panel
   const getActivePanel = () => {
-    if (pathname.includes("/visual")) return "visualise";
+    if (pathname.includes("/visuals")) return "visualise";
     if (pathname.includes("/export")) return "export";
-    if (pathname.includes("/editor") || (pathname.includes("/scripts") && !pathname.includes("/visual"))) return "writing";
+    if (pathname.includes("/editor") || (pathname.includes("/scripts") && !pathname.includes("/visuals"))) return "writing";
     return null;
   };
 
@@ -67,7 +67,7 @@ export function TopNav() {
           });
         break;
       case "visualise":
-        router.push(`/app/projects/${projectId}/visual`);
+        router.push(`/app/projects/${projectId}/visuals`);
         break;
       case "export":
         router.push(`/app/projects/${projectId}/export`);

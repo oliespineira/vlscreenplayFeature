@@ -36,6 +36,8 @@ model Project {
   visualBibles        VisualBible[]
   storyboardPromptSets StoryboardPromptSet[]
   visualElements      VisualElement[]
+  visualisationRuns   VisualisationRun[]
+  sceneBreakdowns     SceneBreakdown[]
 }
 
 model Script {
@@ -205,4 +207,42 @@ model VisualElement {
 
   @@index([projectId])
   @@index([sceneId])
+}
+
+model VisualisationRun {
+  id        String   @id @default(uuid())
+  projectId String
+  scriptId  String
+  status    String   @default("idle") // "idle" | "running" | "done" | "error"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, scriptId])
+  @@index([projectId])
+  @@index([scriptId])
+}
+
+model SceneBreakdown {
+  id         String   @id @default(uuid())
+  projectId  String
+  scriptId   String
+  sceneIndex Int
+  slugline   String
+  sceneText  String?  @db.Text
+  logline    String?  @db.Text
+  props      Json?
+  characters Json?
+  locations  Json?
+  wardrobe   Json?
+  notes      String?  @db.Text
+  updatedAt  DateTime @updatedAt
+
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, scriptId, sceneIndex])
+  @@index([projectId])
+  @@index([scriptId])
+  @@index([projectId, scriptId])
 }

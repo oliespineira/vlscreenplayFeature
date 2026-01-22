@@ -12,6 +12,16 @@ export default async function VisualPage({
   const { projectId } = await params;
   const project = await requireProjectOwner(projectId);
 
+  // Get full project data including coverImageLink
+  const fullProject = await prisma.project.findUnique({
+    where: { id: projectId },
+    select: { title: true, coverImageLink: true },
+  });
+
+  if (!fullProject) {
+    redirect(`/app/projects/${projectId}`);
+  }
+
   // Get the most recent script for this project
   const scripts = await prisma.script.findMany({
     where: { projectId },
@@ -40,8 +50,8 @@ export default async function VisualPage({
       <div className="mx-auto max-w-6xl">
         <VisualsWorkspace
           projectId={projectId}
-          projectTitle={project.title}
-          coverImageLink={project.coverImageLink || null}
+          projectTitle={fullProject.title}
+          coverImageLink={fullProject.coverImageLink || null}
           scenes={formattedScenes}
         />
       </div>

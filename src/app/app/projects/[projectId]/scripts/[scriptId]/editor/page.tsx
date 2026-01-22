@@ -13,12 +13,20 @@ export default async function EditorPage({
   return (
     <div className="min-h-screen bg-black">
       <div className="mx-auto max-w-full">
-        <Link
-          href={`/app/projects/${projectId}`}
-          className="mb-4 inline-block px-4 text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-yellow-500 sm:px-6 lg:px-8"
-        >
-          ← Back to Project
-        </Link>
+        <div className="mb-4 flex items-center gap-4 px-4 sm:px-6 lg:px-8">
+          <Link
+            href={`/app/projects/${projectId}`}
+            className="text-sm font-medium uppercase tracking-widest text-gray-400 transition-colors hover:text-yellow-500"
+          >
+            ← Back to Project
+          </Link>
+          <Link
+            href={`/app/projects/${projectId}/visuals?scriptId=${scriptId}`}
+            className="rounded border border-pink-400 px-4 py-2 text-xs font-bold uppercase tracking-widest text-pink-400 transition-all hover:bg-pink-400 hover:text-black"
+          >
+            Go to Visualising
+          </Link>
+        </div>
 
         <div className="h-[calc(100vh-6rem)]">
           <EditorClient
