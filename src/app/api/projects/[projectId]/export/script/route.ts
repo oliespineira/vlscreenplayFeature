@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { ensureUser } from "@/lib/auth/ensureUser";
 import { requireProjectOwnerForApi } from "@/lib/auth/ownership";
 import { prisma } from "@/lib/db/prisma";
+import { fountainToPdf } from "@/lib/export/fountainToPdf";
+
+export const runtime = "nodejs";
 
 export async function POST(
   request: Request,
@@ -14,6 +17,7 @@ export async function POST(
 
     const body = await request.json();
     const scriptId = body.scriptId;
+    const format = body.format || "pdf"; // "pdf" or "fountain"
 
     if (!scriptId || typeof scriptId !== "string") {
       return NextResponse.json(
@@ -37,12 +41,20 @@ export async function POST(
       );
     }
 
-    // TODO: Implement script export
-    // This should:
-    // - Convert fountain to PDF or formatted document
-    // - Or return fountain file for download
-    // For now, return the fountain text as a downloadable file
+    // Export as PDF
+    if (format === "pdf") {
+      const pdfBuffer = await fountainToPdf(script.fountain, script.title);
+      const filename = `${script.title.replace(/[^a-z0-9]/gi, "_")}.pdf`;
 
+      return new NextResponse(new Uint8Array(pdfBuffer), {
+        headers: {
+          "Content-Type": "application/pdf",
+          "Content-Disposition": `attachment; filename="${filename}"`,
+        },
+      });
+    }
+
+    // Export as Fountain file
     return new NextResponse(script.fountain, {
       headers: {
         "Content-Type": "text/plain",
