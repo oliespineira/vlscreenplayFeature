@@ -23,71 +23,97 @@ export function MoltenBackground() {
       layer.querySelectorAll<HTMLDivElement>(".blob")
     );
 
-    // Cursor target (in px)
-    let tx = window.innerWidth * 0.5;
-    let ty = window.innerHeight * 0.5;
+    const centerX = window.innerWidth * 0.5;
+    const centerY = window.innerHeight * 0.5;
 
-    // Liquid feel controls
-    let stiffness = 0.012; // spring strength toward target
-    let damping = 0.86; // velocity retention (higher = thicker)
-    let wobble = 0.14; // how much blobs orbit around cursor
+    // Each blob has physics state with random targets
+    const state: BlobState[] = blobs.map((el, i) => {
+      const angle = (i / blobs.length) * Math.PI * 2;
+      const radius = 200 + Math.random() * 150;
+      return {
+        el,
+        x: centerX + Math.cos(angle) * radius,
+        y: centerY + Math.sin(angle) * radius,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        mass: 1 + i * 0.25,
+        phase: Math.random() * Math.PI * 2,
+      };
+    });
 
-    // Each blob has physics state
-    const state: BlobState[] = blobs.map((el, i) => ({
-      el,
-      x: tx + (i - 1.5) * 120,
-      y: ty + (i % 2 ? 140 : -140),
-      vx: 0,
-      vy: 0,
-      mass: 1 + i * 0.25,
-      phase: Math.random() * Math.PI * 2,
-    }));
+    // Cursor position for repulsion
+    let cursorX = window.innerWidth * 0.5;
+    let cursorY = window.innerHeight * 0.5;
 
     const handlePointerMove = (e: PointerEvent) => {
-      tx = e.clientX;
-      ty = e.clientY;
-    };
-
-    const handleResize = () => {
-      tx = window.innerWidth * 0.5;
-      ty = window.innerHeight * 0.5;
+      cursorX = e.clientX;
+      cursorY = e.clientY;
     };
 
     window.addEventListener("pointermove", handlePointerMove, {
       passive: true,
     });
-    window.addEventListener("resize", handleResize);
+
+    // Generate random targets for each blob
+    const generateRandomTarget = () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+    });
+
+    // Each blob gets its own random target
+    const targets = state.map(() => generateRandomTarget());
+    const targetChangeInterval = 3000; // ms
+    let lastTargetChange = 0;
 
     // Animate
     let rafId: number;
     function tick(t: number) {
       const time = t * 0.001;
 
+      // Change targets periodically
+      if (t - lastTargetChange > targetChangeInterval) {
+        state.forEach((_, i) => {
+          targets[i] = generateRandomTarget();
+        });
+        lastTargetChange = t;
+      }
+
       state.forEach((b, i) => {
-        // Calculate vector from cursor to blob
-        const dx = b.x - tx;
-        const dy = b.y - ty;
-        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        const target = targets[i];
 
-        // Direction away from cursor
-        const dirX = dx / dist;
-        const dirY = dy / dist;
+        // Add gentle orbital motion for organic feel
+        const angle = b.phase + time * (0.2 + i * 0.03);
+        const orbitalX = Math.cos(angle) * 80;
+        const orbitalY = Math.sin(angle) * 80;
 
-        // Orbital motion for organic feel
-        const angle = b.phase + time * (0.35 + i * 0.05);
-        const orbitalX = Math.cos(angle) * 220 * wobble;
-        const orbitalY = Math.sin(angle) * 220 * wobble;
+        // Target position with orbital offset
+        const targetX = target.x + orbitalX;
+        const targetY = target.y + orbitalY;
 
-        // Target position is away from cursor + orbital offset
-        const repelDistance = 100 + i * 25;
-        const targetX = tx + dirX * repelDistance + orbitalX;
-        const targetY = ty + dirY * repelDistance + orbitalY;
+        // Soft spring force toward random target
+        const stiffness = 0.008;
+        const damping = 0.92;
+        let ax = (targetX - b.x) * (stiffness / b.mass);
+        let ay = (targetY - b.y) * (stiffness / b.mass);
 
-        // Spring force toward target (pulls blob away from cursor)
-        const ax = (targetX - b.x) * (stiffness / b.mass);
-        const ay = (targetY - b.y) * (stiffness / b.mass);
+        // REPULSION FROM CURSOR (only pushes away, never attracts)
+        const dx = b.x - cursorX;
+        const dy = b.y - cursorY;
+        const distToCursor = Math.sqrt(dx * dx + dy * dy) || 1;
+        
+        // Apply strong repulsion when cursor is close
+        const repelRadius = 300;
+        if (distToCursor < repelRadius) {
+          const repelStrength = (1 - distToCursor / repelRadius) * 15;
+          const dirX = dx / distToCursor;
+          const dirY = dy / distToCursor;
+          
+          // Add repulsion force (pushes AWAY from cursor)
+          ax += dirX * repelStrength;
+          ay += dirY * repelStrength;
+        }
 
-        // Integrate velocity with damping ("viscosity")
+        // Integrate velocity with damping
         b.vx = (b.vx + ax) * damping;
         b.vy = (b.vy + ay) * damping;
 
@@ -103,7 +129,6 @@ export function MoltenBackground() {
 
     return () => {
       window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("resize", handleResize);
       if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
