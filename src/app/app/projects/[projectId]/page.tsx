@@ -57,12 +57,6 @@ export default async function ProjectPage({
           </h2>
           <div className="flex items-center gap-4">
             <Link
-              href={`/app/projects/${projectId}/visual`}
-              className="rounded border border-[#FF4F00] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#FF4F00] transition-all hover:bg-[#FF4F00] hover:text-black active:scale-95"
-            >
-              Visual Development
-            </Link>
-            <Link
               href={`/app/projects/${projectId}/analysis`}
               className="rounded border border-[#FF4F00] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#FF4F00] transition-all hover:bg-[#FF4F00] hover:text-black active:scale-95"
             >
